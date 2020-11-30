@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Model Playground</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../index.js"></script>
+    <script type="text/javascript" src="../tour.js"></script>
+    <script type="text/javascript" src="../controller.js"></script>
+    <script type="text/javascript" src="../lookat.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             stats
+             render-order="">
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="deepspace" src="../deepspace.png">
+        <a-asset-item id="crab" src="../gltf/crab.glb"></a-asset-item>
+    	</a-assets>
+
+      <a-sky src="#deepspace"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 0"
+                    look-at="[camera]"
+                    opacity="0.9"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: STARTING TEXT">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <!-- all tours go in here -->
+        <a-entity controller>
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur:3000; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth. ">
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+            <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur: 2000; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
+            <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
+            <a-curve-point position="-0.6 4.4 -0.4"></a-curve-point>
+            <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
+          </a-curve>
+          <a-curve id="four" tour="dur:2000; text: Besides the pulsar, a ringed disk of energized material is revealed.">
+            <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
+            <a-curve-point position="-5.349 -0.5 4.1"></a-curve-point>
+            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="five" tour="dur:3000; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
+            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+        <a-entity gltf-model="#crab"
+                  id="crab"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity>
+    </a-scene>
+  </body>
+</html>
+
+<!-- ASSET TEMPLATES -->
+<!-- <a-asset-item id="" src=""></a-asset-item> -->
+
+<!-- <a-entity gltf-model="#"
+                  scale="0 0 0"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  render-order="object">
+      </a-entity> entity template-->
