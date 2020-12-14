@@ -8,10 +8,10 @@
     <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
-    <script type="text/javascript" src="../index.js"></script>
-    <script type="text/javascript" src="../tour.js"></script>
-    <script type="text/javascript" src="../controller.js"></script>
-    <script type="text/javascript" src="../lookat.js"></script>
+    <script type="text/javascript" src="../../index.js"></script>
+    <script type="text/javascript" src="../../tour.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../lookat.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -19,8 +19,13 @@
              stats
              render-order="">
     	<a-assets> <!-- add the gltf models here -->
-        <img id="deepspace" src="../deepspace.png">
-        <a-asset-item id="crab" src="../gltf/crab.glb"></a-asset-item>
+        <img id="deepspace" src="../../deepspace.png">
+        <a-asset-item id="crab" src="../../gltf/crab.glb"></a-asset-item>
+        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
+        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
+        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
     	</a-assets>
 
       <a-sky src="#deepspace"></a-sky>
@@ -37,28 +42,28 @@
       <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
         <!-- all tours go in here -->
-        <a-entity controller>
+        <a-entity controller sound="autoplay: false; volue: 0.75">
           <!-- naming convention: all lower case -->
-          <a-curve id="one" tour="dur:3000; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth. ">
+          <a-curve id="one" tour="dur: 3000; audio: #audio1; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth.">
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
           </a-curve>
-          <a-curve id="two" tour="text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
+          <a-curve id="two" tour="audio: #audio2; text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
           </a-curve>
-          <a-curve id="three" tour="dur: 2000; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
+          <a-curve id="three" tour="dur: 2000; audio: #audio3; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
             <a-curve-point position="-0.6 4.4 -0.4"></a-curve-point>
             <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
           </a-curve>
-          <a-curve id="four" tour="dur:2000; text: Besides the pulsar, a ringed disk of energized material is revealed.">
+          <a-curve id="four" tour="dur:2000; audio: #audio4; text: Besides the pulsar, a ringed disk of energized material is revealed.">
             <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
             <a-curve-point position="-5.349 -0.5 4.1"></a-curve-point>
             <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
           </a-curve>
-          <a-curve id="five" tour="dur:3000; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
+          <a-curve id="five" tour="dur:3000; audio: #audio5; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
             <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>

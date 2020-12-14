@@ -8,10 +8,10 @@
     <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
-    <script type="text/javascript" src="../index.js"></script>
-    <script type="text/javascript" src="../tour.js"></script>
-    <script type="text/javascript" src="../controller.js"></script>
-    <script type="text/javascript" src="../lookat.js"></script>
+    <script type="text/javascript" src="../../index.js"></script>
+    <script type="text/javascript" src="../../tour.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../lookat.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -37,7 +37,7 @@
       <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
         <!-- all tours go in here -->
-        <a-entity controller>
+        <a-entity controller sound>
           <!-- naming convention: all lower case -->
           <a-curve id="one" tour="text: FIRST STOP">
             <a-curve-point position="-3 -0.5 -3.4" rotation="0 -112 0"></a-curve-point>

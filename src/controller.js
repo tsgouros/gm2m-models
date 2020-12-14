@@ -1,7 +1,7 @@
 AFRAME.registerComponent('controller', {
   schema: {},
 
-  init: function () { 
+  init: function () {
     this.update.bind(this);
     // this is where i will handle gathering all of the tour components.
     // once gathered, I will start the tour using the along path event.
@@ -14,9 +14,9 @@ AFRAME.registerComponent('controller', {
     // console.log(this.canClick)
     // this.once is an options object to be passed
     // to the eventlisteners. This makes it where
-    // an event is only called once per invoke. 
+    // an event is only called once per invoke.
     this.once = {once : true};
-        
+
     this.tours = [];
     this.numTours = 0;
     this.currentTour = 0;
@@ -25,8 +25,11 @@ AFRAME.registerComponent('controller', {
     this.tours = Array.from(this.el.children).map(child => child.getAttribute("tour"))
     this.numTours = this.tours.length;
 
+    this.sound = this.el.getAttribute("sound")
+
     console.log(this.tours);
     console.log(this.numTours);
+    console.log(this.sound)
 
     // Now I will create a method to handle changing to the next tour...
     var advanceTour = function() {
@@ -44,6 +47,11 @@ AFRAME.registerComponent('controller', {
       // getting new tour information...
       var tour_name = this.tours[this.currentTour].tour_name;
       var dur = this.tours[this.currentTour].dur;
+      var audio = this.tours[this.currentTour].audio
+
+      // setting the new audio to play!
+      this.el.setAttribute("sound", {on: 'movingended', src: audio})
+      console.log("updated sounds")
 
       // Change the curve, and restart the animation to follow the new
       // curve. The setAttribute function restarts the animation in
@@ -63,6 +71,12 @@ AFRAME.registerComponent('controller', {
       // again after the next segment is completed.
       document.getElementById('mainScene')
         .removeEventListener('click', clickHandler);
+
+      // remove the sounds playing when someone clicks to go to next spot
+      // in the tour.
+      var entity = document.querySelector('[sound]');
+      console.log(entity.components.sound)
+      entity.components.sound.stopSound();
 
       // Advance to the next part of the tour.
       advanceTourBinded();
@@ -93,7 +107,7 @@ AFRAME.registerComponent('controller', {
       textVal.value = tour.text;
       textHolder.setAttribute("text", textVal);
 
-      // getting diretion to face the text 
+      // getting diretion to face the text
       var direction = new THREE.Vector3();
       this.el.sceneEl.camera.getWorldDirection( direction );
 
@@ -109,7 +123,11 @@ AFRAME.registerComponent('controller', {
       console.log("rendering text at:", textPos, textRot, textHolder);
 
       // HANDLING SOUND WOULD HAPPEN BEFORE CHECKING CLICK.
-      //console.log('this: ', this)
+      // remove the sounds playing when someone clicks to go to next spot
+      // in the tour.
+      var entity = document.querySelector('[sound]');
+      console.log(entity.components.sound)
+      entity.components.sound.playSound();
 
       // There is no sound to play.  If we can click, listen for one.
       if (true) { // this.canClick
@@ -119,7 +137,7 @@ AFRAME.registerComponent('controller', {
       } else {
         // console.log("we here...")
         // // If we can't click, pause (if a pause is specified), then click.
-        // var pause = tour.pauseDuration ? 
+        // var pause = tour.pauseDuration ?
         //             tour.pauseDuration : 1000;
         // setTimeout(clickHandler.bind(this), pause);
       }
@@ -129,6 +147,7 @@ AFRAME.registerComponent('controller', {
     document.getElementById("rig").setAttribute("alongpath",
                       "curve: #" + this.tours[0].tour_name +
                       "; dur: " + this.tours[0].dur + ";");
+    this.el.setAttribute("sound", {on: 'movingended', src: this.tours[0].audio})
     document.getElementById("rig").addEventListener('movingended', moveEndHandler.bind(this), this.once);
 
 
