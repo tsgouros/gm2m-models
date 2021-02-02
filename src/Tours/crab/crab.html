@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../../tour.js"></script>
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
+    <script type="text/javascript" src="../../override-crab-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -20,7 +21,7 @@
              render-order="">
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
-        <a-asset-item id="crab" src="../../gltf/crab.glb"></a-asset-item>
+        <a-asset-item id="crab" src="../../gltf/crab_01.glb"></a-asset-item>
         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
         <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
@@ -72,6 +73,7 @@
       </a-entity>
 
         <a-entity gltf-model="#crab"
+                  override-crab-material
                   id="crab"
                   scale="1 1 1"
                   position="0 0 0"
