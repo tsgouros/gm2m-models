@@ -22,6 +22,7 @@
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
         <a-asset-item id="crab" src="../../gltf/crab_01.glb"></a-asset-item>
+        <a-asset-item id="crabParticles" src="../../gltf/crab_01.particles.glb"></a-asset-item>
         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
         <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
@@ -72,6 +73,16 @@
         </a-entity>
       </a-entity>
 
+        <a-entity gltf-model="#crabParticles"
+                  override-crab-material
+                  id="crab"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity>
         <a-entity gltf-model="#crab"
                   override-crab-material
                   id="crab"
@@ -82,6 +93,7 @@
                    colorManagement: true;
                    physicallyCorrectLights: true;">
         </a-entity>
+
     </a-scene>
   </body>
 </html>
