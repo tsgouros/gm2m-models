@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
     <script type="text/javascript" src="../../override-crab-material.js"></script>
+    <script type="text/javascript" src="../../override-particle-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -73,7 +74,7 @@
         </a-entity>
       </a-entity>
 
-        <a-entity gltf-model="#crabParticles"
+        <a-entity gltf-model="#crab"
                   override-crab-material
                   id="crab"
                   scale="1 1 1"
@@ -83,8 +84,8 @@
                    colorManagement: true;
                    physicallyCorrectLights: true;">
         </a-entity>
-        <a-entity gltf-model="#crab"
-                  override-crab-material
+        <a-entity gltf-model="#crabParticles"
+                  override-particle-material
                   id="crab"
                   scale="1 1 1"
                   position="0 0 0"
