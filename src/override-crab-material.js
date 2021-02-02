@@ -17,10 +17,13 @@ AFRAME.registerComponent('override-crab-material', {
                  if (node.isMesh){
                    let mat = node.material;
                    let baseColor = new THREE.Color(0x000000);
-                   mat.emissiveIntensity = 4;
+                   let emissiveColor = new THREE.Color(0xffffff);
+                   mat.emissiveIntensity = 1;
+                   mat.emissive = emissiveColor;
                    mat.color = baseColor;
-                   mat.blending = THREE.AdditiveBlending;
-                   node.material = mat;                  
+                   mat.emissiveMap.encoding = THREE.LinearEncoding
+                   // mat.blending = THREE.AdditiveBlending;
+                   node.material = mat;               
                  }
               });
               comp.modelLoaded = true;
