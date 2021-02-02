@@ -21,8 +21,9 @@ AFRAME.registerComponent('override-crab-material', {
                    mat.emissiveIntensity = 1;
                    mat.emissive = emissiveColor;
                    mat.color = baseColor;
-                   mat.emissiveMap.encoding = THREE.LinearEncoding
-                   // mat.blending = THREE.AdditiveBlending;
+                   mat.side = THREE.FrontSide;
+                   mat.emissiveMap.encoding = THREE.LinearEncoding;
+                   mat.blending = THREE.AdditiveBlending;
                    node.material = mat;               
                  }
               });
