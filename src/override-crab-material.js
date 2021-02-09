@@ -23,7 +23,10 @@ AFRAME.registerComponent('override-crab-material', {
                    mat.color = baseColor;
                    mat.side = THREE.FrontSide;
                    mat.emissiveMap.encoding = THREE.LinearEncoding;
-                   mat.blending = THREE.AdditiveBlending;
+                   // mat.blending = THREE.AdditiveBlending;
+                   // mat.depthWrite = false;
+                   // mat.transparent = true;
+                   // mat.opacity = 0.9;
                    node.material = mat;               
                  }
               });
