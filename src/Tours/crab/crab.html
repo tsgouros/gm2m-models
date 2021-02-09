@@ -13,16 +13,24 @@
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
     <script type="text/javascript" src="../../override-crab-material.js"></script>
+    <script type="text/javascript" src="../../override-cloud-material.js"></script>
+    <script type="text/javascript" src="../../override-impostor-material.js"></script>
     <script type="text/javascript" src="../../override-particle-material.js"></script>
+    <script type="text/javascript" src="../../override-inner-glow-material.js"></script>
+    <script type="text/javascript" src="../../override-outer-glow-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
              background="color: #FAFAFA"
              stats
-             render-order="">
+             render-order="background, nebula, clouds">
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
         <a-asset-item id="crab" src="../../gltf/crab_01.glb"></a-asset-item>
+        <a-asset-item id="crabCloud" src="../../gltf/crab_01_cloud1.glb"></a-asset-item>
+        <a-asset-item id="crabImpostor" src="../../gltf/crab_01_impostor.glb"></a-asset-item>
+        <a-asset-item id="crabInnerGlow" src="../../gltf/crab_01_innerglow.glb"></a-asset-item>
+        <a-asset-item id="crabOuterGlow" src="../../gltf/crab_01_outerglow.glb"></a-asset-item>
         <a-asset-item id="crabParticles" src="../../gltf/crab_01.particles.glb"></a-asset-item>
         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
@@ -31,7 +39,7 @@
         <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
     	</a-assets>
 
-      <a-sky src="#deepspace"></a-sky>
+      <a-sky src="#deepspace" render-order="background"></a-sky>
 
       <a-entity id="textHolder"
                     position="0 0 0"
@@ -74,17 +82,68 @@
         </a-entity>
       </a-entity>
 
-        <a-entity gltf-model="#crab"
+<!--         <a-entity gltf-model="#crab"
                   override-crab-material
                   id="crab"
                   scale="1 1 1"
                   position="0 0 0"
                   rotation="0 0 0"
+                  render-order="nebula"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity> -->
+
+                <a-entity gltf-model="#crabInnerGlow"
+                  override-inner-glow-material
+                  id="crab"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  render-order="clouds"
                   renderer="antialias: true;
                    colorManagement: true;
                    physicallyCorrectLights: true;">
         </a-entity>
-        <a-entity gltf-model="#crabParticles"
+
+        <a-entity gltf-model="#crabOuterGlow"
+                  override-outer-glow-material
+                  id="crab"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  render-order="nebula"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity>
+
+<!--         <a-entity gltf-model="#crabCloud"
+                  override-cloud-material
+                  id="crabCloud"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  render-order="clouds"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity> -->
+
+<!--         <a-entity gltf-model="#crabImpostor"
+                  override-impostor-material
+                  id="crabCloud"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  rotation="0 0 0"
+                  render-order="clouds"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+        </a-entity> -->
+
+        
+<!--         <a-entity gltf-model="#crabParticles"
                   override-particle-material
                   id="crab"
                   scale="1 1 1"
@@ -93,7 +152,8 @@
                   renderer="antialias: true;
                    colorManagement: true;
                    physicallyCorrectLights: true;">
-        </a-entity>
+        </a-entity> -->
+        
 
     </a-scene>
   </body>
