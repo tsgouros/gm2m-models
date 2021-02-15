@@ -15,9 +15,11 @@
     <script type="text/javascript" src="../../override-crab-material.js"></script>
     <script type="text/javascript" src="../../override-cloud-material.js"></script>
     <script type="text/javascript" src="../../override-impostor-material.js"></script>
+    <script type="text/javascript" src="../../override-fresnel-material.js"></script>
     <script type="text/javascript" src="../../override-particle-material.js"></script>
     <script type="text/javascript" src="../../override-inner-glow-material.js"></script>
     <script type="text/javascript" src="../../override-outer-glow-material.js"></script>
+    <script type="text/javascript" src="../../customShader.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -82,8 +84,8 @@
         </a-entity>
       </a-entity>
 
-<!--         <a-entity gltf-model="#crab"
-                  override-crab-material
+        <a-entity gltf-model="#crab"
+                  override-fresnel-material
                   id="crab"
                   scale="1 1 1"
                   position="0 0 0"
@@ -92,9 +94,18 @@
                   renderer="antialias: true;
                    colorManagement: true;
                    physicallyCorrectLights: true;">
-        </a-entity> -->
+        </a-entity>
 
-                <a-entity gltf-model="#crabInnerGlow"
+<!--                 <a-sphere
+                  material="shader: custom-shader; color: blue; transparent: true;"
+                  scale="1 1 1"
+                  position="0 0 0"
+                  renderer="antialias: true;
+                   colorManagement: true;
+                   physicallyCorrectLights: true;">
+                  </a-sphere> -->
+
+<!--                 <a-entity gltf-model="#crabInnerGlow"
                   override-inner-glow-material
                   id="crab"
                   scale="1 1 1"
@@ -104,9 +115,9 @@
                   renderer="antialias: true;
                    colorManagement: true;
                    physicallyCorrectLights: true;">
-        </a-entity>
+        </a-entity> -->
 
-        <a-entity gltf-model="#crabOuterGlow"
+<!--         <a-entity gltf-model="#crabOuterGlow"
                   override-outer-glow-material
                   id="crab"
                   scale="1 1 1"
@@ -116,7 +127,7 @@
                   renderer="antialias: true;
                    colorManagement: true;
                    physicallyCorrectLights: true;">
-        </a-entity>
+        </a-entity> -->
 
 <!--         <a-entity gltf-model="#crabCloud"
                   override-cloud-material
