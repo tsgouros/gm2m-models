@@ -128,34 +128,65 @@ float snoise(vec3 v)
 
   // This receives the color value from the schema, which becomes a vec3 in the shader.
   // uniform vec3 color;
+  uniform vec2 opacityThresholds;
+  uniform vec2 colorRampThresholds;
+  uniform vec3 lowColor;
+  uniform vec3 highColor;
+  uniform float transparency;
+  uniform float uTime;
+
   varying float viewAngle;
   varying vec3 vWorldPosition;
 
   void main () {
+
+    float opacityNoise = smoothstep( -1.0, 1.0, mix(snoise( vWorldPosition * vec3( 1.0) + vec3( 0.0, 0.0, uTime * 0.2 ) ), snoise( vWorldPosition * vec3( 125.0 ) + vec3( 0.0, 0.0, uTime / 65.0 ) ), 0.25 )  ) * 0.5 + 0.0;
+
+    opacityNoise = mix(opacityNoise, 1.0, smoothstep( 0.4, 0.9, viewAngle ) );
+
+    float opacity = smoothstep( opacityThresholds.x, opacityThresholds.y, viewAngle);
+    opacity *= opacityNoise;
+    // opacity *= smoothstep( 0.2, 0.3, viewAngle );
+    opacity = mix( 1.0, opacity, transparency );
     
-    float colorRamp = smoothstep( 0.3, 0.9, viewAngle );
+    float colorRamp = smoothstep( colorRampThresholds.x, colorRampThresholds.y, opacity );
     
     float fineNoise = snoise( vWorldPosition * vec3( 100.0 ) );
     float smoothNoise = snoise ( vWorldPosition * vec3( 1.0 ) );
     float noiseMix = mix( fineNoise, smoothNoise, 0.7 );
 
     float colorNoise = smoothstep( -1.0, 0.7, noiseMix ) * 0.75 + 0.25;
-    float opacityNoise = smoothstep( -1.0, 1.0, snoise( vWorldPosition * vec3( 85.0 ) ) );
 
-    float opacity = smoothstep( 0.4, 0.7, viewAngle + opacityNoise);
-    opacity *= smoothstep( 0.2, 0.3, viewAngle );
+    vec3 outputColor = mix( lowColor, highColor, colorRamp * colorNoise );
 
-    vec3 outputColor = mix( vec3( 0.0, 0.2, 0.5 ), vec3( 0.9, 0.9, 0.99 ), colorRamp * colorNoise );
+    
 
     gl_FragColor = vec4( outputColor , opacity );
   }
 `;
 
-AFRAME.registerComponent('override-fresnel-material', {         
+AFRAME.registerComponent('override-fresnel-material', {
+  schema: {
+    lowColor: {type: 'color', default: '#001122'},
+    highColor: {type: 'color', default: '#bbddff'},
+    opacityThresholds: {type: 'vec2', default: {x: 0.35, y: 0.5} },
+    colorRampThresholds: {type: 'vec2', default: {x: 0.35, y: 0.5} },
+    transparency: {type: 'float', default: 1 }
+  },
+
+  uniforms: {
+    lowColor: {type: 'color', value: '#001122'},
+    highColor: {type: 'color', value: '#bbddff'},
+    opacityThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
+    colorRampThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
+    transparency: {type: 'float', value: 1 },
+    uTime: {type: 'float', value: 0 }
+  },
+
   init: function () {
 
     let fresMaterial  = new THREE.ShaderMaterial({
-      uniforms: {},
+      uniforms: this.uniforms,
       vertexShader,
       fragmentShader
     });
@@ -174,10 +205,33 @@ AFRAME.registerComponent('override-fresnel-material', {
       //console.log(mesh);
       mesh.traverse(function(node){
         if (node.isMesh){
-          node.material = fresMaterial;               
+          node.material = fresMaterial;
+          node.material.side = THREE.FrontSide;
+
+          const tempGeometry = new THREE.Geometry().fromBufferGeometry(node.geometry);
+
+          tempGeometry.mergeVertices();
+          tempGeometry.computeVertexNormals();
+          tempGeometry.computeFaceNormals();
+
+          node.geometry = new THREE.BufferGeometry().fromGeometry(tempGeometry);
+
         }
       });
       comp.modelLoaded = true;
     });  
+  },
+
+  update: function (data) {
+    this.uniforms.lowColor.value = new THREE.Color(this.data.lowColor);
+    this.uniforms.highColor.value = new THREE.Color(this.data.highColor);
+    this.uniforms.opacityThresholds.value = this.data.opacityThresholds;
+    this.uniforms.colorRampThresholds.value = this.data.colorRampThresholds;
+    this.uniforms.transparency.value = this.data.transparency;
+  },
+
+  tick: function (t) {
+    this.uniforms.uTime.value = t / 1000;
   }
+
 });
