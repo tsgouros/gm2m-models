@@ -147,7 +147,7 @@ float snoise(vec3 v)
     float opacity = smoothstep( opacityThresholds.x, opacityThresholds.y, viewAngle);
     opacity *= opacityNoise;
     // opacity *= smoothstep( 0.2, 0.3, viewAngle );
-    opacity = mix( 1.0, opacity, transparency );
+    
     
     float colorRamp = smoothstep( colorRampThresholds.x, colorRampThresholds.y, opacity );
     
@@ -159,7 +159,7 @@ float snoise(vec3 v)
 
     vec3 outputColor = mix( lowColor, highColor, colorRamp * colorNoise );
 
-    
+    opacity = mix( 1.0, opacity, transparency );
 
     gl_FragColor = vec4( outputColor , opacity );
   }
