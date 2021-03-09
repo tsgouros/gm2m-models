@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../../tour.js"></script>
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
+    <script type="text/javascript" src="../../startscreen.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -21,11 +22,11 @@
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
         <a-asset-item id="crab" src="../../gltf/crab.glb"></a-asset-item>
-        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
-        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
-        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
-        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
-        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
+        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3"></audio>
+        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3"></audio>
+        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3"></audio>
+        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3"></audio>
+        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3"></audio>
     	</a-assets>
 
       <a-sky src="#deepspace"></a-sky>
@@ -39,10 +40,20 @@
                           value: STARTING TEXT">
         </a-entity>
 
-      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+      <!-- along path component added to the rig through controller script -->
+      <a-entity id="rig" rotation="0 0 0" position="2.8 -0.5 -5.5" wasd-controls>
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <a-entity id="startscreen"
+                      start-screen
+                      position="0 0 -2"
+                      look-at="[camera]"
+                      opacity="0.9"
+                      text="width: 3; color: white; align: center;
+                            anchor: center; side: double;
+                            value: Click anywhere to begin the tour.">
+        </a-entity>
         <!-- all tours go in here -->
-        <a-entity controller sound="autoplay: false; volue: 0.75">
+        <a-entity controller sound="volume: 0.75">
           <!-- naming convention: all lower case -->
           <a-curve id="one" tour="dur: 3000; audio: #audio1; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth.">
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>

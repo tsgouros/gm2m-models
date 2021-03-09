@@ -48,6 +48,7 @@ AFRAME.registerComponent('controller', {
       var tour_name = this.tours[this.currentTour].tour_name;
       var dur = this.tours[this.currentTour].dur;
       var audio = this.tours[this.currentTour].audio
+      console.log(audio)
 
       // setting the new audio to play!
       this.el.setAttribute("sound", {on: 'movingended', src: audio})
@@ -76,7 +77,7 @@ AFRAME.registerComponent('controller', {
       // in the tour.
       var entity = document.querySelector('[sound]');
       console.log(entity.components.sound)
-      entity.components.sound.stopSound();
+      // entity.components.sound.stopSound();
 
       // Advance to the next part of the tour.
       advanceTourBinded();
@@ -126,7 +127,7 @@ AFRAME.registerComponent('controller', {
       // remove the sounds playing when someone clicks to go to next spot
       // in the tour.
       var entity = document.querySelector('[sound]');
-      console.log(entity.components.sound)
+      console.log("YOOOOO: " + entity.components.sound)
       entity.components.sound.playSound();
 
       // There is no sound to play.  If we can click, listen for one.
@@ -143,14 +144,17 @@ AFRAME.registerComponent('controller', {
       }
     };
 
-    // setting up and starting going through all of the tours!
-    document.getElementById("rig").setAttribute("alongpath",
-                      "curve: #" + this.tours[0].tour_name +
-                      "; dur: " + this.tours[0].dur + ";");
-    this.el.setAttribute("sound", {on: 'movingended', src: this.tours[0].audio})
-    document.getElementById("rig").addEventListener('movingended', moveEndHandler.bind(this), this.once);
+    var startTour = function(event) {
+      // setting up and starting going through all of the tours!
+      // wait for user click/the starting event to run this...
+      document.getElementById("rig").setAttribute("alongpath",
+                        "curve: #" + this.tours[0].tour_name +
+                        "; dur: " + this.tours[0].dur + ";");
+      this.el.setAttribute("sound", {on: 'movingended', src: this.tours[0].audio})
+      document.getElementById("rig").addEventListener('movingended', moveEndHandler.bind(this), this.once);
+    }
 
-
+    document.getElementById("rig").addEventListener('starttour', startTour.bind(this), this.once);
   },
 
   update: function () {
