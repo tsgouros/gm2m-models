@@ -12,16 +12,18 @@
     <script type="text/javascript" src="../../tour.js"></script>
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
+    <script type="text/javascript" src="../../override-noise-material.js"></script>
     <script type="text/javascript" src="../../startscreen.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
              background="color: #FAFAFA"
              stats
-             render-order="">
+             render-order="background, nebula, clouds">
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
-        <a-asset-item id="crab" src="../../gltf/crab.glb"></a-asset-item>
+        <a-asset-item id="crabModel" src="../../gltf/crab_jets.glb"></a-asset-item>
+        <img id="glowTexture" src="../../textures/glow1.png">
         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3"></audio>
         <audio id="audio3" src="./audio/CrabVRAudio_03.mp3"></audio>
@@ -82,15 +84,28 @@
         </a-entity>
       </a-entity>
 
-        <a-entity gltf-model="#crab"
-                  id="crab"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity>
+      <a-entity
+      id="glowingNebula"
+      scale="1 1 1"
+      position="0 0 0"
+      rotation="0 0 0">
+      <a-entity
+        gltf-model="#crabModel"
+        id="crab"
+        override-noise-material="opacityThresholds: 0.27 0.48; colorRampThresholds: 0.28 0.86; highColor: #fafcff; lowColor: #0052a3;"
+        render-order="nebula"
+        renderer="antialias: true;
+        colorManagement: true;
+        physicallyCorrectLights: true;"></a-entity>
+      <a-image
+        width="27"
+        height="27"
+        src="#glowTexture"
+        look-at="[camera]"
+        render-order="clouds"
+        material="transparent: true; opacity: 0.4; alphaTest: 0.01; depthTest: false; color: #5553df"></a-image>
+    </a-entity>
+
     </a-scene>
   </body>
 </html>
