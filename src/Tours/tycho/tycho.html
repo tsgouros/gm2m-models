@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Model Playground</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../../index.js"></script>
+    <script type="text/javascript" src="../../tour.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../lookat.js"></script>
+    <script type="text/javascript" src="../../override-tycho-material.js"></script>
+    <script type="text/javascript" src="../../override-tycho-halo-material.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             stats
+             render-order="background, nebula, clouds">
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="deepspace" src="../../deepspace.png">
+        <a-asset-item id="tycho" src="../../gltf/tycho_v1.glb"></a-asset-item>
+        <a-asset-item id="tychoHaloGltf" src="../../gltf/tycho_halo_v1.glb"></a-asset-item>
+        <img id="glow" src="../../textures/glow1.png">
+<!--         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
+        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
+        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio> -->
+    	</a-assets>
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 0"
+                    look-at="[camera]"
+                    opacity="0.9"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: STARTING TEXT">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <!-- all tours go in here -->
+        <a-entity controller sound="autoplay: false; volue: 0.75">
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur: 3000; audio: #audio1; text: Stop 1">
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="1.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="dur: 2000; audio: #audio3; text: Stop 2">
+            <a-curve-point position="1.7 -0.6 4.3"></a-curve-point>
+            <a-curve-point position="-0.6 -1.5 -1.4"></a-curve-point>
+            <a-curve-point position="-5.116 -0.5 -0.4"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur:2000; audio: #audio4; text: Stop 3">
+            <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
+            <a-curve-point position="-5.349 -0.5 4.1"></a-curve-point>
+            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="four" tour="dur:3000; audio: #audio5; text: Stop 4">
+            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="glowingNebula"
+        scale="0.5 0.5 0.5"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          gltf-model="#tycho"
+          id="tycho_model"
+          override-tycho-material="noiseAmt: 0.0;"
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity 
+          gltf-model="#tychoHaloGltf"
+          id="tycho_halo"
+          render-order="clouds"
+          override-tycho-halo-material
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-image>
+      </a-entity>        
+
+    </a-scene>
+  </body>
+</html>
