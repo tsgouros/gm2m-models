@@ -122,13 +122,7 @@ float snoise(vec3 v)
                                 dot(p2,x2), dot(p3,x3) ) );
   }
 
-  // This receives the color value from the schema, which becomes a vec3 in the shader.
-  // uniform vec3 color;
-  uniform vec2 opacityThresholds;
-  uniform vec2 colorRampThresholds;
-  uniform vec3 lowColor;
-  uniform vec3 highColor;
-  uniform float transparency;
+  uniform float noiseAmt;
   uniform float uTime;
   uniform sampler2D emissionTex;
 
@@ -147,9 +141,11 @@ float snoise(vec3 v)
     finerTimeNoise *= 0.2;
     finerTimeNoise += 1.0;
 
-    srcTexture *= 1.3;
-    srcTexture = mix(srcTexture, smoothstep(0.0, 1.0, srcTexture), 0.5);
-    srcTexture *= timeNoise * finerTimeNoise;
+    srcTexture *= 1.0;
+    srcTexture = mix(srcTexture, smoothstep(0.0, 1.0, srcTexture), 0.0);
+    srcTexture *= mix(1.0, timeNoise * finerTimeNoise, noiseAmt);
+
+    float opacity = smoothstep(0.0, 0.3, dot(srcTexture, vec3(0.3, 0.5, 0.2) ) );
 
     gl_FragColor = vec4( srcTexture, 1.0 );
   }
@@ -157,21 +153,13 @@ float snoise(vec3 v)
 
 AFRAME.registerComponent('override-noise-material', {
   schema: {
-    lowColor: {type: 'color', default: '#001122'},
-    highColor: {type: 'color', default: '#bbddff'},
-    opacityThresholds: {type: 'vec2', default: {x: 0.35, y: 0.5} },
-    colorRampThresholds: {type: 'vec2', default: {x: 0.35, y: 0.5} },
-    transparency: {type: 'float', default: 1 }
+    noiseAmt: {type: 'float', default: 0.0}
   },
 
   uniforms: {
-    lowColor: {type: 'color', value: '#001122'},
-    highColor: {type: 'color', value: '#bbddff'},
-    opacityThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
-    colorRampThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
-    transparency: {type: 'float', value: 1 },
+    noiseAmt: {type: 'float', value: 1.0},
     uTime: {type: 'float', value: 0 },
-    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/CloudSurfaceTexture.png")}
+    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/CrabJetsTexture1.png")}
   },
 
   init: function () {
@@ -202,7 +190,8 @@ AFRAME.registerComponent('override-noise-material', {
           // fresMaterial.uniforms = this.uniforms;
 
           node.material = fresMaterial;
-          // node.material.side = THREE.BackSide;
+          // node.material.depthTest = false;
+          // node.material.side = THREE.FrontSide;
 
           const tempGeometry = new THREE.Geometry().fromBufferGeometry(node.geometry);
 
@@ -219,11 +208,7 @@ AFRAME.registerComponent('override-noise-material', {
   },
 
   update: function (data) {
-    this.uniforms.lowColor.value = new THREE.Color(this.data.lowColor);
-    this.uniforms.highColor.value = new THREE.Color(this.data.highColor);
-    this.uniforms.opacityThresholds.value = this.data.opacityThresholds;
-    this.uniforms.colorRampThresholds.value = this.data.colorRampThresholds;
-    this.uniforms.transparency.value = this.data.transparency;
+    this.uniforms.noiseAmt.value = this.data.noiseAmt;
   },
 
   tick: function (t) {

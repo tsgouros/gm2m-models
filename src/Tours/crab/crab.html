@@ -13,13 +13,8 @@
     <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
     <script type="text/javascript" src="../../override-crab-material.js"></script>
-    <script type="text/javascript" src="../../override-cloud-material.js"></script>
-    <script type="text/javascript" src="../../override-impostor-material.js"></script>
-    <script type="text/javascript" src="../../override-fresnel-material.js"></script>
-    <script type="text/javascript" src="../../override-particle-material.js"></script>
-    <script type="text/javascript" src="../../override-inner-glow-material.js"></script>
-    <script type="text/javascript" src="../../override-outer-glow-material.js"></script>
-    <script type="text/javascript" src="../../customShader.js"></script>
+    <script type="text/javascript" src="../../override-noise-material.js"></script>
+    <script type="text/javascript" src="../../override-emission-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -28,17 +23,13 @@
              render-order="background, nebula, clouds">
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
-        <a-asset-item id="crab" src="../../gltf/crab_01.glb"></a-asset-item>
-        <a-asset-item id="crabCloud" src="../../gltf/crab_01_cloud1.glb"></a-asset-item>
-        <a-asset-item id="crabImpostor" src="../../gltf/crab_01_impostor.glb"></a-asset-item>
-        <a-asset-item id="crabInnerGlow" src="../../gltf/crab_01_innerglow.glb"></a-asset-item>
-        <a-asset-item id="crabOuterGlow" src="../../gltf/crab_01_outerglow.glb"></a-asset-item>
-        <a-asset-item id="crabParticles" src="../../gltf/crab_01.particles.glb"></a-asset-item>
-        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
+        <a-asset-item id="crabJets" src="../../gltf/crab_jets.glb"></a-asset-item>
+        <img id="glow" src="../../textures/glow1.png">
+<!--         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
         <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
         <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
-        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
+        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio> -->
     	</a-assets>
 
       <a-sky src="#deepspace" render-order="background"></a-sky>
@@ -84,87 +75,27 @@
         </a-entity>
       </a-entity>
 
-        <a-entity gltf-model="#crab"
-                  override-fresnel-material="opacityThresholds: 0.27 0.48; colorRampThresholds: 0.28 0.86; highColor: #fafcff; lowColor: #0052a3;"
-                  id="crab"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="nebula"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity>
-
-<!--                 <a-sphere
-                  material="shader: custom-shader; color: blue; transparent: true;"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-                  </a-sphere> -->
-
-<!--                 <a-entity gltf-model="#crabInnerGlow"
-                  override-inner-glow-material
-                  id="crab"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="clouds"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity> -->
-
-<!--         <a-entity gltf-model="#crabOuterGlow"
-                  override-outer-glow-material
-                  id="crab"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="nebula"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity> -->
-
-<!--         <a-entity gltf-model="#crabCloud"
-                  override-cloud-material
-                  id="crabCloud"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="clouds"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity> -->
-
-<!--         <a-entity gltf-model="#crabImpostor"
-                  override-impostor-material
-                  id="crabCloud"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="clouds"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity> -->
-
-        
-<!--         <a-entity gltf-model="#crabParticles"
-                  override-particle-material
-                  id="crab"
-                  scale="1 1 1"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  renderer="antialias: true;
-                   colorManagement: true;
-                   physicallyCorrectLights: true;">
-        </a-entity> -->
-        
+      <a-entity
+        id="glowingNebula"
+        scale="1 1 1"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          gltf-model="#crabJets"
+          id="crab"
+          override-noise-material="opacityThresholds: 0.27 0.48; colorRampThresholds: 0.28 0.86; highColor: #fafcff; lowColor: #0052a3;"
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-image 
+          width="27" 
+          height="27" 
+          src="#glow" 
+          look-at="[camera]"
+          render-order="clouds"
+          material="transparent: true; opacity: 0.4; alphaTest: 0.01; depthTest: false; color: #5553df"></a-image>
+      </a-entity>        
 
     </a-scene>
   </body>

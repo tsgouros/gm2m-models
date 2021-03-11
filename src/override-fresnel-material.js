@@ -1,8 +1,11 @@
 const vertexShader = `
 varying float viewAngle;
 varying vec3 vWorldPosition;
+varying vec2 vUv;
 
   void main() {
+
+    vUv = uv;
 
     vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
     vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
@@ -134,11 +137,15 @@ float snoise(vec3 v)
   uniform vec3 highColor;
   uniform float transparency;
   uniform float uTime;
+  uniform sampler2D emissionTex;
 
   varying float viewAngle;
   varying vec3 vWorldPosition;
+  varying vec2 vUv;
 
   void main () {
+
+    vec3 srcTexture = texture2D(emissionTex, vec2(vUv.x, 1.0 - vUv.y)).rgb;
 
     float opacityNoise = smoothstep( -1.0, 1.0, mix(snoise( vWorldPosition * vec3( 1.0) + vec3( 0.0, 0.0, uTime * 0.2 ) ), snoise( vWorldPosition * vec3( 125.0 ) + vec3( 0.0, 0.0, uTime / 65.0 ) ), 0.25 )  ) * 0.5 + 0.0;
 
@@ -159,9 +166,21 @@ float snoise(vec3 v)
 
     vec3 outputColor = mix( lowColor, highColor, colorRamp * colorNoise );
 
+    float timeNoise = snoise( vWorldPosition * 0.1 + vec3(length(vWorldPosition) * 0.3 + uTime * -0.14) );
+    timeNoise *= 0.3;
+    timeNoise += 1.0;
+
+    float finerTimeNoise = snoise( vWorldPosition * 77.0 + vec3(uTime) * 1.1 );
+    finerTimeNoise *= 0.2;
+    finerTimeNoise += 1.0;
+
+    srcTexture *= 1.3;
+    srcTexture = mix(srcTexture, smoothstep(0.0, 1.0, srcTexture), 0.5);
+    srcTexture *= timeNoise * finerTimeNoise;
+
     opacity = mix( 1.0, opacity, transparency );
 
-    gl_FragColor = vec4( outputColor , opacity );
+    gl_FragColor = vec4( srcTexture, 1.0 );
   }
 `;
 
@@ -180,7 +199,8 @@ AFRAME.registerComponent('override-fresnel-material', {
     opacityThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
     colorRampThresholds: {type: 'vec2', value: {x: 0.35, y: 0.5} },
     transparency: {type: 'float', value: 1 },
-    uTime: {type: 'float', value: 0 }
+    uTime: {type: 'float', value: 0 },
+    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/CloudSurfaceTexture.png")}
   },
 
   init: function () {
@@ -198,15 +218,20 @@ AFRAME.registerComponent('override-fresnel-material', {
     comp.scene = el.sceneEl.object3D;  
     comp.modelLoaded = false;
 
-    // After gltf model has loaded, modify it materials.
+    // After gltf model has loaded, modify its materials.
     el.addEventListener('model-loaded', function(ev){
       let mesh = el.getObject3D('mesh'); 
       if (!mesh){return;}
       //console.log(mesh);
       mesh.traverse(function(node){
         if (node.isMesh){
+
+          // get the emissive map: 
+          // this.uniforms.emissionTex.value = node.material.emissiveMap;
+          // fresMaterial.uniforms = this.uniforms;
+
           node.material = fresMaterial;
-          node.material.side = THREE.FrontSide;
+          // node.material.side = THREE.BackSide;
 
           const tempGeometry = new THREE.Geometry().fromBufferGeometry(node.geometry);
 
