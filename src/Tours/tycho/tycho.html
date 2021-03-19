@@ -25,11 +25,11 @@
         <a-asset-item id="tycho" src="../../gltf/tycho_v2.glb"></a-asset-item>
         <a-asset-item id="tychoHaloGltf" src="../../gltf/tycho_halo_v1.glb"></a-asset-item>
         <img id="glow" src="../../textures/glow1.png">
-<!--         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
-        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
-        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
-        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
-        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio> -->
+        <audio id="audio1" src="./audio/Tycho_VR_3DObjectIntro.ogg" preload="auto"></audio>
+        <audio id="audio2" src="./audio/Tycho_VR_Shockwave.ogg" preload="auto"></audio>
+        <audio id="audio3" src="./audio/Tycho_VR_StellarDebris.ogg" preload="auto"></audio>
+        <audio id="audio4" src="./audio/Tycho_VR_DebrisClumpsShockArcs.ogg" preload="auto"></audio>
+        <audio id="audio5" src="./audio/Tycho_VR_NoCentralPointSource.ogg" preload="auto"></audio>
     	</a-assets>
 
       <a-sky src="#deepspace" render-order="background"></a-sky>
@@ -40,7 +40,7 @@
                     opacity="0.9"
                     text="width: 1; color: white; align: center;
                           anchor: center; side: double;
-                          value: STARTING TEXT">
+                          value: ">
         </a-entity>
 
       <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
@@ -48,39 +48,31 @@
       </a-entity>
 
       <a-entity controller sound="autoplay: false; volume: 0.75">
-          <a-curve id="one" tour="dur:3000; text: This 3D model reveals details of the turbulent debris created by an exploded star that was observed by the Danish astronomer Tycho Brahe in the year 1572.;">
-            <a-curve-point position="0.1 -0.1 -0.1"></a-curve-point>
-            <a-curve-point position="1.1 0.2 5.3"></a-curve-point>
-            <a-curve-point position="4.1 -0.0 3.8"></a-curve-point>
+          <a-curve id="one" tour="audio: #audio1; dur:3000; text: This 3D model reveals details of the turbulent debris created by an exploded star that was observed by the Danish astronomer Tycho Brahe in the year 1572.;">
+            <a-curve-point position="0.0 0.1 -0.1"></a-curve-point>
+            <a-curve-point position="-0.0 -2.1 6.1"></a-curve-point>
+            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
           </a-curve>
-          <a-curve id="two" tour="dur:3000; text: A shock wave produced by the expanding debris from the explosion is outlined by the sharp blue-purple circular arcs of twenty million degree gas seen on the outer rim.;">
-            <a-curve-point position="4.1 -0.0 3.8"></a-curve-point>
-            <a-curve-point position="4.7 0.2 1.2"></a-curve-point>
-            <a-curve-point position="2.7 2.2 -3.7"></a-curve-point>
+          <a-curve id="two" tour="audio: #audio2; dur:3000; text: A shock wave produced by the expanding debris from the explosion is outlined by the sharp blue-purple circular arcs of twenty million degree gas seen on the outer rim.;">
+            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
+            <a-curve-point position="2.9 -1.4 6.3"></a-curve-point>
+            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
           </a-curve>
-          <a-curve id="three" tour="dur:3000; text: The stellar debris, which has a temperature of about ten million degrees and is visible in X-rays, shows up as mottled fingers of gas.;">
-            <a-curve-point position="2.7 2.2 -3.7"></a-curve-point>
-            <a-curve-point position="-0.1 2.4 -4.1"></a-curve-point>
-            <a-curve-point position="-4.0 -0.6 -4.9"></a-curve-point>
+          <a-curve id="three" tour="audio: #audio3;dur:3000; text: The stellar debris, which has a temperature of about ten million degrees and is visible in X-rays, shows up as mottled fingers of gas.;">
+            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
+            <a-curve-point position="3.6 2.1 0.1"></a-curve-point>
+            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
           </a-curve>
-          <a-curve id="four" tour="dur:3000; text: The debris for Tycho is distributed in clumps  and its outer shock wave can be seen in smooth and continuous arcs.;">
-            <a-curve-point position="-7.3 -0.0 -2.8"></a-curve-point>
-            <a-curve-point position="-7.9 2.1 0.1"></a-curve-point>
-            <a-curve-point position="-2.2 5.2 -1.8"></a-curve-point>
+          <a-curve id="four" tour="audio: #audio4; dur:3000; text: The debris for Tycho is distributed in clumps  and its outer shock wave can be seen in smooth and continuous arcs.;">
+            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
+            <a-curve-point position="-1.2 -0.2 -5.7"></a-curve-point>
+            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
           </a-curve>
-          <a-curve id="five" tour="dur:3000; text: No central point source is detected in Tycho’s supernova remnant. The absence of one is consistent with other evidence that Tycho is a Type Ia supernova, which is thought to signal the detonation and destruction of a white dwarf star.;">
-            <a-curve-point position="-2.2 5.2 -1.8"></a-curve-point>
-            <a-curve-point position="0.1 -0.1 -0.0"></a-curve-point>
-            <a-curve-point position="0.1 -0.1 -0.1"></a-curve-point>
+          <a-curve id="five" tour="audio: #audio5; dur:3000; text: No central point source is detected in Tycho's supernova remnant. The absence of one is consistent with other evidence that Tycho is a Type Ia supernova, which is thought to signal the detonation and destruction of a white dwarf star.;">
+            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
+            <a-curve-point position="-5.3 -0.2 -1.1"></a-curve-point>
+            <a-curve-point position="0.1 0.1 -0.0"></a-curve-point>
           </a-curve>
-
-<!--           <a-entity id="visualize-tour">
-            <a-draw-curve curveref="#one" material="shader: line; color: blue;"></a-draw-curve>
-            <a-draw-curve curveref="#two" material="shader: line; color: blue;"></a-draw-curve>
-            <a-draw-curve curveref="#three" material="shader: line; color: blue;"></a-draw-curve>
-            <a-draw-curve curveref="#four" material="shader: line; color: blue;"></a-draw-curve>
-            <a-draw-curve curveref="#five" material="shader: line; color: blue;"></a-draw-curve>
-          </a-entity> -->
         </a-entity>
 
       <a-entity
