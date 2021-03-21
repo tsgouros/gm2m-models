@@ -14,12 +14,15 @@
     <script type="text/javascript" src="../../lookat.js"></script>
     <script type="text/javascript" src="../../override-tycho-hue-material.js"></script>
     <script type="text/javascript" src="../../override-tycho-halo-material.js"></script>
+    <script type="text/javascript" src="makeTour.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
              background="color: #FAFAFA"
              stats
-             render-order="background, nebula, clouds">
+             render-order="background, nebula, clouds"
+             make-tour
+             >
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
         <a-asset-item id="tycho" src="../../gltf/tycho_v2.glb"></a-asset-item>
@@ -46,34 +49,6 @@
       <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
       </a-entity>
-
-      <a-entity controller sound="autoplay: false; volume: 0.75">
-          <a-curve id="one" tour="audio: #audio1; dur:3000; text: This 3D model reveals details of the turbulent debris created by an exploded star that was observed by the Danish astronomer Tycho Brahe in the year 1572.;">
-            <a-curve-point position="0.0 0.1 -0.1"></a-curve-point>
-            <a-curve-point position="-0.0 -2.1 6.1"></a-curve-point>
-            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
-          </a-curve>
-          <a-curve id="two" tour="audio: #audio2; dur:3000; text: A shock wave produced by the expanding debris from the explosion is outlined by the sharp blue-purple circular arcs of twenty million degree gas seen on the outer rim.;">
-            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
-            <a-curve-point position="2.9 -1.4 6.3"></a-curve-point>
-            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
-          </a-curve>
-          <a-curve id="three" tour="audio: #audio3;dur:3000; text: The stellar debris, which has a temperature of about ten million degrees and is visible in X-rays, shows up as mottled fingers of gas.;">
-            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
-            <a-curve-point position="3.6 2.1 0.1"></a-curve-point>
-            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
-          </a-curve>
-          <a-curve id="four" tour="audio: #audio4; dur:3000; text: The debris for Tycho is distributed in clumps  and its outer shock wave can be seen in smooth and continuous arcs.;">
-            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
-            <a-curve-point position="-1.2 -0.2 -5.7"></a-curve-point>
-            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
-          </a-curve>
-          <a-curve id="five" tour="audio: #audio5; dur:3000; text: No central point source is detected in Tycho's supernova remnant. The absence of one is consistent with other evidence that Tycho is a Type Ia supernova, which is thought to signal the detonation and destruction of a white dwarf star.;">
-            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
-            <a-curve-point position="-5.3 -0.2 -1.1"></a-curve-point>
-            <a-curve-point position="0.1 0.1 -0.0"></a-curve-point>
-          </a-curve>
-        </a-entity>
 
       <a-entity
         id="glowingNebula"
