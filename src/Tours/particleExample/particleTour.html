@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Model Playground</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+  <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-spe-particles-component@^1.0.4/dist/aframe-spe-particles-component.min.js"></script>
+    <script type="text/javascript" src="../../index.js"></script>
+    <script type="text/javascript" src="../../tour.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../lookat.js"></script>
+    <script src="makeTour.js" defer></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             stats
+             render-order="background, nebula, clouds"
+             >
+    	<a-assets> <!-- add the gltf models here -->
+        <audio id="audio1" src="./audio/Tycho_VR_3DObjectIntro.ogg" preload="auto"></audio>
+        <audio id="audio2" src="./audio/Tycho_VR_Shockwave.ogg" preload="auto"></audio>
+        <audio id="audio3" src="./audio/Tycho_VR_StellarDebris.ogg" preload="auto"></audio>
+        <audio id="audio4" src="./audio/Tycho_VR_DebrisClumpsShockArcs.ogg" preload="auto"></audio>
+        <audio id="audio5" src="./audio/Tycho_VR_NoCentralPointSource.ogg" preload="auto"></audio>
+        <img id="deepspace" src="../../deepspace.png">
+    	</a-assets>
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 0"
+                    look-at="[camera]"
+                    opacity="0.9"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: ">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+      </a-entity>
+
+      <a-entity id="tour-controller" ></a-entity>
+
+      <a-entity spe-particles="texture: ../../textures/fog.png; position-spread: 5 5 5; velocity-spread: .1 .05 .1; particle-count: 50; max-age: 10; size: 6,20; opacity: 0,1,0; randomize-position: true"></a-entity>
+
+    </a-scene>
+
+
+
+  </body>
+</html>
