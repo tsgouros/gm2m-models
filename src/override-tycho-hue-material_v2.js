@@ -5,7 +5,7 @@ AFRAME.registerComponent('override-tycho-material', {
   },
 
   uniforms: {
-    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/Tycho_Color2Alpha2_v1.png")},
+    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/Tycho_v3_4k.png")},
     viewOpacityThresholds: {type: 'vec2', value: {x: 0.0, y: 0.3} },
     distanceOpacityThresholds: {type: 'vec2', value: {x: 2.6, y: 3.4} }
   },
@@ -14,10 +14,8 @@ AFRAME.registerComponent('override-tycho-material', {
 
     const vertexShader = `
 varying vec2 vUv;
-varying float opacityExponent;
-varying float smoothEdgeOpacity;
+varying float opacityScalar;
 varying float hueOffset;
-varying vec3 vertexPos;
 
 uniform vec2 viewOpacityThresholds;
 uniform vec2 distanceOpacityThresholds;
@@ -41,8 +39,10 @@ float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
 
     vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
     vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+    //vec4 worldNormalFour = modelMatrix * vec4( normal, 1.0 );
+    //vec3 worldNormal = worldNormalFour.xyz;
 
-    vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
+    vec3 worldNormal = normalize(mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal);
     vec3 worldNormalSmooth = normalize(worldPosition.xyz);
 
     vec3 I = normalize( cameraPosition - worldPosition.xyz );
@@ -51,25 +51,28 @@ float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
     float viewAngleSmooth = dot( I, worldNormalSmooth );
     float vertexDistance = length(position.xyz);
 
-    vertexPos = position.xyz;
+    hueOffset = map( viewAngleSmooth, -1.0, 1.0, -0.1, 0.5);
 
-    hueOffset = mapClamped( viewAngleSmooth, -0.6, 1.0, 0.0, 1.0 );
-    hueOffset = pow( hueOffset, 1.9 );
-    hueOffset = mapClamped( hueOffset, 0.0, 1.0, -0.1, 0.5 );
-
-    opacityExponent = map( viewAngleSmooth, -14.5, 0.3, 1.0, 0.0 ) + mapClamped( viewAngleFine, -1.4, -0.5, 1.7, 0.0 );
-    opacityExponent += map( vertexDistance, 6.5, 7.4, -0.7, -1.2 );
-    opacityExponent = mapClamped( opacityExponent, 0.0, 1.0, 7.1, 1.0 );
-
-    smoothEdgeOpacity = abs(viewAngleSmooth);
-    opacityExponent = mapClamped(abs(viewAngleFine) + smoothEdgeOpacity, 0.5, 0.2, 1.0, 4.0);
-    //opacityExponent = mapClamped(viewAngleFine, 0.4, 0.1, 1.0, 4.0);
-    //opacityExponent = 1.0;
+    opacityScalar = mapSmoothed( abs(viewAngleFine), 0.5, 1.0, 0.0, 1.0);
 
     gl_Position = projectionMatrix * mvPosition;
   }
 `;
 const fragmentShader = `
+
+float map(float value, float min1, float max1, float min2, float max2) {
+  return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
+
+float mapClamped(float value, float min1, float max1, float min2, float max2) {
+  return clamp( map( value, min1, max1, min2, max2 ), min2, max2 );
+}
+
+float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
+  float smoothedValue = smoothstep( min1, max1, value );
+  return map( smoothedValue, 0.0, 1.0, min2, max2 );
+}
+
 // Use low precision.
   precision lowp float;
 
@@ -96,34 +99,41 @@ vec3 hsv2rgb(vec3 c)
   uniform sampler2D emissionTex;
 
   varying vec2 vUv;
-  varying vec3 vertexPos;
 
-  varying float opacityExponent;
-  varying float smoothEdgeOpacity;
+  varying float opacityScalar;
   varying float hueOffset;
 
   void main () {
 
     vec4 srcImg = texture2D(emissionTex, vec2(vUv.x, 1.0 - vUv.y));
-    vec3 srcTexture = srcImg.rgb;
-    float srcAlpha = srcImg.a;
 
-    vec3 srcTexHsv = rgb2hsv( srcTexture );
-    vec3 srcTexHueShifted = srcTexHsv + vec3( hueOffset + 2.0, 0.0, 0.0 );
-    srcTexHueShifted = mod( srcTexHueShifted, vec3( 1.0, 2.0, 2.0 ));
+    // scale source image into the range needed for the color and alpha ramps 
+    float srcRamp = mapClamped(srcImg.r, 0.0, 1.0, 0.4, 0.9);
 
-    srcTexHueShifted = hsv2rgb( srcTexHueShifted );
+    // generate the color from the source ramp 
+    vec3 saturatedColor = vec3(0.0, 0.053, 0.205);
+    vec3 whiteColor = vec3(1.0);
+    float colorRamp = mapSmoothed(srcRamp, 0.636, 1.0, 0.0, 1.0);
 
-    float opacity = clamp(pow( srcAlpha, 5.1 * opacityExponent ) * 1.3, 0.0, 1.0) * smoothstep(0.1, 0.3, smoothEdgeOpacity);
+    // color before hue shift
+    vec3 baseColor = mix(saturatedColor, whiteColor, colorRamp);
 
-    vec3 rgbOut = srcTexHueShifted;
-    rgbOut *= 1.0;
-    rgbOut = mix(rgbOut, smoothstep(0.0, 1.0, rgbOut), 1.0);
-    vec3 overlay = vec3(0.9, 0.85, 0.8) * smoothstep(0.35, 0.5, pow(srcAlpha, 4.0) ) * 0.7;
-    rgbOut = vec3(1.0) - (( vec3(1.0) - rgbOut ) * ( vec3(1.0) - overlay));
+    vec3 baseColorHsv = rgb2hsv( baseColor );
+    vec3 hueShiftedHsv = baseColorHsv + vec3( hueOffset + 2.5, 0.0, 0.0 );
+    hueShiftedHsv = mod( hueShiftedHsv, vec3( 1.0, 2.0, 2.0 ));
+    hueShiftedHsv *= vec3( 1.0, 1.3, 1.8 );
+
+    vec3 hueShiftedRgb = hsv2rgb( hueShiftedHsv );
+
+    vec3 rgbOut = mix(hueShiftedRgb, smoothstep(0.0, 1.0, hueShiftedRgb), vec3(1.0));
+
+    // generate the alpha ramp from the source ramp
+    float alphaRamp = mapClamped(srcRamp, 0.64, 0.827, 0.0, 1.0);
+
+    //float opacity = pow(alphaRamp, (1.0 - opacityScalar) * 5.3 + 1.0) * opacityScalar;
+    float opacity = alphaRamp * opacityScalar;
 
     gl_FragColor = vec4( rgbOut, opacity );
-    //gl_FragColor = vec4( vec3(opacityExponent), 1.0 );
   }
 `;
 
@@ -155,7 +165,8 @@ vec3 hsv2rgb(vec3 c)
           node.material = fresMaterial;
           node.material.depthTest = false;
           // node.material.blending = THREE.AdditiveBlending;
-          node.material.side = THREE.FrontSide;
+          //node.material.side = THREE.FrontSide;
+          node.material.side = THREE.DoubleSide;
 
           const tempGeometry = new THREE.Geometry().fromBufferGeometry(node.geometry);
 
