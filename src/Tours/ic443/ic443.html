@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Model Playground</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../../index.js"></script>
+    <script type="text/javascript" src="../../tour.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../lookat.js"></script>
+    <script type="text/javascript" src="../../override-ic443-ejecta-material.js"></script>
+    <script type="text/javascript" src="../../override-ic443-torus-material.js"></script>
+    <script type="text/javascript" src="../../override-ic443-blastwave-material.js"></script>
+    <script type="text/javascript" src="../../override-ic443-nebula-material.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             stats
+             render-order="background, nebula, clouds"
+             >
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="deepspace" src="../../deepspace.png">
+        <a-asset-item id="ic443Ejecta" src="../../gltf/ic443_ejecta.glb"></a-asset-item>
+        <a-asset-item id="ic443Nebula" src="../../gltf/ic443_nebula.glb"></a-asset-item>
+        <a-asset-item id="ic443Blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
+        <a-asset-item id="ic443Torus" src="../../gltf/ic443_torus.glb"></a-asset-item>
+    	</a-assets>
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 0"
+                    look-at="[camera]"
+                    opacity="0.9"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: ">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <!-- all tours go in here -->
+        <a-entity controller sound="autoplay: false; volume: 0.75">
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur: 5000; audio: #audio1; text: [ IC443 tour text ]">
+            <a-curve-point position="0.66 -0.66 1.0"></a-curve-point>
+            <a-curve-point position="0.6 -0.5 6."></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="dur: 5000; audio: #audio2; text: [ IC443 tour text ]">
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+            <a-curve-point position="4.2 -0.58 3.1"></a-curve-point>
+            <a-curve-point position="4.7 -0.6 3.3"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur:5000; audio: #audio4; text: [ IC443 tour text ]">
+            <a-curve-point position="4.7 -0.6 3.3"></a-curve-point>
+            <a-curve-point position="1.0 -0.64 1.4"></a-curve-point>
+            <a-curve-point position="0.66 -0.66 1.0"></a-curve-point>
+          </a-curve>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="ic443"
+        scale="0.5 0.5 0.5"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          gltf-model="#ic443Torus"
+          id="ic443TorusEntity"
+          override-ic443-torus-material
+          render-order="clouds"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Blastwave"
+          id="ic443BlastwaveEntity"
+          override-ic443-blastwave-material
+          render-order="clouds"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Nebula"
+          id="ic443NebulaEntity"
+          override-ic443-nebula-material
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Ejecta"
+          id="ic443EjectaEntity"
+          override-ic443-ejecta-material
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+<!--         <a-entity 
+          gltf-model="#tychoHaloGltf"
+          scale="0.95 0.95 0.95"
+          id="tycho_halo"
+          render-order="clouds"
+          override-tycho-halo-material
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity> -->
+
+      </a-entity>        
+
+    </a-scene>
+
+  </body>
+</html>
