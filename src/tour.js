@@ -13,7 +13,7 @@ AFRAME.registerComponent('tour', {
     dur: {type: 'int', default: 1000},
     audio: {type: 'audio', default: ''},
     playWhile: {type: 'boolean', default: false},
-    text: {type: 'string', default: "No info for this tour!"}, // default: ''
+    text: {type: 'string', default: ""}, // default: ''
     noClickText: {type: 'string'}, // default: ''
     pauseDuration: {type: 'int', default: 6000},
     textOffset: {type: 'vec3'}, // default: {x: 0, y: 0, z: 0}
