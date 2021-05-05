@@ -21,7 +21,7 @@
     <a-scene id="mainScene"
              background="color: #FAFAFA"
              stats
-             render-order="background, nebula, clouds"
+             render-order="background, nebula, clouds, textShadow, text"
              >
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
@@ -29,14 +29,31 @@
         <a-asset-item id="ic443Nebula" src="../../gltf/ic443_nebula.glb"></a-asset-item>
         <a-asset-item id="ic443Blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
         <a-asset-item id="ic443Torus" src="../../gltf/ic443_torus.glb"></a-asset-item>
+        <audio id="audio1" src="./audio/IC443_VRNarration_01.ogv" preload="auto"></audio>
+        <audio id="audio2" src="./audio/IC443_VRNarration_02.ogv" preload="auto"></audio>
+        <audio id="audio3" src="./audio/IC443_VRNarration_03.ogv" preload="auto"></audio>
+        <audio id="audio4" src="./audio/IC443_VRNarration_04.ogv" preload="auto"></audio>
+        <audio id="audio5" src="./audio/IC443_VRNarration_05.ogv" preload="auto"></audio>
+        <audio id="audio6" src="./audio/IC443_VRNarration_06.ogv" preload="auto"></audio>
     	</a-assets>
 
       <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolderShadow"
+                    position="0 0 0"
+                    look-at="[camera]"
+                    opacity="0.9"
+                    render-order="textShadow"
+                    text="width: 1; color: black; align: center;
+                          anchor: center; side: double;
+                          value: ">
+        </a-entity>
 
       <a-entity id="textHolder"
                     position="0 0 0"
                     look-at="[camera]"
                     opacity="0.9"
+                    render-order="text"
                     text="width: 1; color: white; align: center;
                           anchor: center; side: double;
                           value: ">
@@ -52,18 +69,18 @@
             <a-curve-point position="0.6 -0.5 6."></a-curve-point>
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
           </a-curve>
-          <a-curve id="two" tour="dur: 5000; audio: #audio2; text: The 3D model shows a shock wave (similar to a sonic boom produced by a jet) and a nearby cloud of gas (purple).;">
+          <a-curve id="two" tour="dur: 5000; audio: #audio2; text: The 3D model shows a shock wave (similar to a sonic boom produced by a jet) and a nearby cloud of gas.;">
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
             <a-curve-point position="3.2 -1.2 3.1"></a-curve-point>
             <a-curve-point position="3.7 -1.3 2.3"></a-curve-point>
           </a-curve>
-          <a-curve id="three" tour="dur:7000; audio: #audio3; text: The shock wave and the remains of the star (red and yellow) have collided with the gas cloud (grey) and are now passing through it.;">
+          <a-curve id="three" tour="dur:7000; audio: #audio3; text: The shock wave and the remains of the star (red, yellow, and blue) have collided with the gas cloud and are now passing through it.;">
             <a-curve-point position="3.7 -1.3 2.3"></a-curve-point>
             <a-curve-point position="0.0 -0.2 3.7"></a-curve-point>
             <a-curve-point position="-1.9 0.3 1.65"></a-curve-point>
             <a-curve-point position="-2.0 0.4 1.5"></a-curve-point>
           </a-curve>
-          <a-curve id="four" tour="dur:6000; audio: #audio4; text: The different colors for the star’s remains show the range of velocities for their motion away from the center of the explosion.;">
+          <a-curve id="four" tour="dur:6000; audio: #audio4; text: The different colors for the star's remains show the range of velocities for their motion away from the center of the explosion. ;">
 <!--             <a-curve-point position="0.9 1.2 4.2"></a-curve-point> -->
             <a-curve-point position="-2.0 0.4 1.5"></a-curve-point>
 <!--             <a-curve-point position="1.0 1.1 4.1"></a-curve-point>
