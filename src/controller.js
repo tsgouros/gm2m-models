@@ -59,6 +59,14 @@ AFRAME.registerComponent('controller', {
       el.setAttribute("alongpath",
                       "curve: #" + tour_name +
                       "; dur: " + dur + ";");
+
+      // Get rid of the previous stop's text while we're moving
+      var textVal = textHolder.getAttribute("text");
+      textVal.value = "";
+      textHolder.setAttribute("text", textVal);
+      var textShadowVal = textHolderShadow.getAttribute("text");
+      textShadowVal.value = "";
+      textHolderShadow.setAttribute("text", textShadowVal);
     };
     let advanceTourBinded = advanceTour.bind(this);
 
@@ -100,16 +108,27 @@ AFRAME.registerComponent('controller', {
       // UPDATING TEXT WOULD HAPPEN HERE.
       // Display the text for the (end of the) path.
       var textHolder = document.getElementById("textHolder");
+      var textHolderShadow = document.getElementById("textHolderShadow");
 
       // Determine what text to show.  Note that if clicking is not
       // possible, there might be alternate text to display.
       var textVal = textHolder.getAttribute("text");
       textVal.value = tour.text;
       textHolder.setAttribute("text", textVal);
+      var textShadowVal = textHolderShadow.getAttribute("text");
+      textShadowVal.value = tour.text;
+      textHolderShadow.setAttribute("text", textShadowVal);
 
       // getting diretion to face the text
       var direction = new THREE.Vector3();
       this.el.sceneEl.camera.getWorldDirection( direction );
+
+      var shadowDirection = new THREE.Vector3();
+      shadowDirection.copy(direction);
+      shadowDirection.normalize();
+      var shadowDirectionLength = direction.length();
+      shadowDirection.multiplyScalar(shadowDirectionLength * 1.01);
+      shadowDirection.add(new THREE.Vector3(0., -0.003, 0.));
 
       // Now we determine where to display the text.
       var pos = mainRig.getAttribute("position");
@@ -118,7 +137,11 @@ AFRAME.registerComponent('controller', {
                  y: pos.y + offset.y + direction.y,  // to accommodate camera rig
                  z: pos.z + offset.z + direction.z};
       var textRot = tour.textRotate;
+      var textPosShadow = {x: pos.x + offset.x + shadowDirection.x,
+                 y: pos.y + offset.y + shadowDirection.y,  // to accommodate camera rig
+                 z: pos.z + offset.z + shadowDirection.z};
       textHolder.setAttribute("position", textPos);
+      textHolderShadow.setAttribute("position", textPosShadow)
       // textHolder.setAttribute("rotation", textRot);
       console.log("rendering text at:", textPos, textRot, textHolder);
 
