@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Model Playground</title>
+    <title>Crab</title>
+    <link href="../../style.css" rel="stylesheet">
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
@@ -10,67 +11,72 @@
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
     <script type="text/javascript" src="../../index.js"></script>
     <script type="text/javascript" src="../../tour.js"></script>
-    <script type="text/javascript" src="../../controller.js"></script>
     <script type="text/javascript" src="../../lookat.js"></script>
     <script type="text/javascript" src="../../override-crab-material.js"></script>
     <script type="text/javascript" src="../../override-noise-material.js"></script>
     <script type="text/javascript" src="../../override-emission-material.js"></script>
+    <script type="text/javascript" src="../../controller.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
              background="color: #FAFAFA"
              stats
-             render-order="background, nebula, clouds">
+             render-order="background, nebula, clouds, text">
     	<a-assets> <!-- add the gltf models here -->
         <img id="deepspace" src="../../deepspace.png">
         <a-asset-item id="crabJets" src="../../gltf/crab_jets.glb"></a-asset-item>
         <img id="glow" src="../../textures/glow1.png">
-<!--         <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
+        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
         <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
         <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
         <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
-        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio> -->
+        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
     	</a-assets>
 
       <a-sky src="#deepspace" render-order="background"></a-sky>
 
       <a-entity id="textHolder"
-                    position="0 0 0"
+                    position="0 0 1000"
                     look-at="[camera]"
-                    opacity="0.9"
+                    render-order="text"
                     text="width: 1; color: white; align: center;
                           anchor: center; side: double;
-                          value: STARTING TEXT">
+                          value:  welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ">
         </a-entity>
 
-      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath>
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath="curve: #two; dur: 5000">
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
         <!-- all tours go in here -->
-        <a-entity controller sound="autoplay: false; volume: 0.75">
+        <a-entity id="controllerElement" controller sound="autoplay: false; volume: 0.75">
           <!-- naming convention: all lower case -->
-          <a-curve id="one" tour="dur: 3000; audio: #audio1; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth.">
+          <a-curve id="one" tour="dur: 6000; pauseDuration: 8000; audio: audio1; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth.">
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
           </a-curve>
-          <a-curve id="two" tour="audio: #audio2; text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
+          <a-curve id="two" tour="dut: 6000; pauseDuration: 8000; audio: audio2; text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
           </a-curve>
-          <a-curve id="three" tour="dur: 2000; audio: #audio3; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
+          <a-curve id="three" tour="dur: 6000; pauseDuration: 8000; audio: audio3; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
             <a-curve-point position="-0.6 4.4 -0.4"></a-curve-point>
             <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
           </a-curve>
-          <a-curve id="four" tour="dur:2000; audio: #audio4; text: Besides the pulsar, a ringed disk of energized material is revealed.">
+          <a-curve id="four" tour="dur:6000; pauseDuration: 8000; audio: audio4; text: Besides the pulsar, a ringed disk of energized material is revealed.">
             <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
             <a-curve-point position="-5.349 -0.5 4.1"></a-curve-point>
             <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
           </a-curve>
-          <a-curve id="five" tour="dur:3000; audio: #audio5; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
+          <a-curve id="five" tour="dur:6000; pauseDuration: 8000; audio: audio5; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
             <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+          </a-curve>
+          <a-curve id="six" tour="dur: 6000; pauseDuration: 8000; text: ">
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
           </a-curve>
         </a-entity>
       </a-entity>
@@ -98,15 +104,63 @@
       </a-entity>        
 
     </a-scene>
+
+    <div id="splash">
+      <div id="splash-inner">
+        <div class="title">Crab</div>
+        <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
+        <div class="sub-title">VR by <a href="https://www.nasa.gov/">NASA</a>,
+        <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
+        <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
+        <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
+      <br />
+    </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    // This stuff is down here at the end because it has to run as soon as
+    // all the a-frame assets are loaded.  It manages the splash screen shown
+    // above, by pausing the action as soon as everything is loaded, and then by
+    // executing .play() when the start button is pressed.
+
+    // Pause action as soon as everything is loaded.
+    document.getElementById("mainScene").addEventListener("loaded",
+      function() {
+        document.getElementById("go-button").style.display = "flex";
+    });
+
+    pressStart = function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("go-button").style.display = "none";
+
+      // Load all the sounds and play-then-pause them all, to get them
+      // permission to run under the iOS rules, which say that a sound
+      // can only be played as a result of a user action.
+      var sounds = document.getElementsByTagName('audio');
+
+      for (i = 0; i < sounds.length; i++) {
+        // console.log("playing, then pausing:", sounds[i]);
+        var promise = sounds[i].play(); 
+
+        if (promise) {
+            //console.log("PLAYING:", promise);
+            sounds[i].pause();
+            sounds[i].currentTime = 0;
+
+          promise.catch(function(e) { 
+            console.log(e); 
+            console.log(e.name); 
+            console.log(e.message); 
+            console.log(e.code); 
+          });
+        }      
+      }
+
+      var controllerComponent = document.querySelector('[controller]').components.controller;;
+      controllerComponent.startTour();
+    }
+  </script>
+
   </body>
 </html>
-
-<!-- ASSET TEMPLATES -->
-<!-- <a-asset-item id="" src=""></a-asset-item> -->
-
-<!-- <a-entity gltf-model="#"
-                  scale="0 0 0"
-                  position="0 0 0"
-                  rotation="0 0 0"
-                  render-order="object">
-      </a-entity> entity template-->
