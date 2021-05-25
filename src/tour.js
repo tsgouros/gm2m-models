@@ -17,7 +17,8 @@ AFRAME.registerComponent('tour', {
     noClickText: {type: 'string'}, // default: ''
     pauseDuration: {type: 'int', default: 6000},
     textOffset: {type: 'vec3'}, // default: {x: 0, y: 0, z: 0}
-    textRotate: {type: 'vec3'}, // default: {x: 0, y: 0, z: 0}
+    textPos: {type: 'vec3'},
+    textRot: {type: 'vec3'}, // default: {x: 0, y: 0, z: 0}
     tour_name: {type: 'string'}
   },
 
