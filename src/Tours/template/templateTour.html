@@ -2,78 +2,65 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Crab Nebula</title>
+    <title>Tour template</title>
+
+    <!-- load stylesheet -->
     <link href="../../style.css" rel="stylesheet">
+    
+    <!-- load A-frame code -->
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+
+    <!-- load general tour code -->  
     <script type="text/javascript" src="../../tourScripts/index.js"></script>
     <script type="text/javascript" src="../../tourScripts/tour.js"></script>
     <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
-    <script type="text/javascript" src="./materials/override-crab-material.js"></script>
-    <script type="text/javascript" src="./materials/override-noise-material.js"></script>
-    <script type="text/javascript" src="./materials/override-emission-material.js"></script>
     <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+
+    <!-- load any custom components/materials -->
+    <script type="text/javascript" src="../../materials/transparent-edge-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
-             background="color: #FAFAFA"
-             stats
-             render-order="background, nebula, clouds, text">
-    	<a-assets> <!-- add the gltf models here -->
+      background="color: #000000"
+      render-order="background, nebula, text">
+      >
+
+      <!-- load gltf models, audio, and images here -->
+    	<a-assets>
+        <a-asset-item id="ejecta" src="../../gltf/ic443_ejecta.glb"></a-asset-item>
+        <a-asset-item id="blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
         <img id="deepspace" src="../../textures/deepspace.png">
-        <a-asset-item id="crabJets" src="../../gltf/crab_jets.glb"></a-asset-item>
-        <img id="glow" src="../../textures/glow1.png">
-        <audio id="audio1" src="./audio/CrabVRAudio_01.mp3" preload="auto"></audio>
-        <audio id="audio2" src="./audio/CrabVRAudio_02.mp3" preload="auto"></audio>
-        <audio id="audio3" src="./audio/CrabVRAudio_03.mp3" preload="auto"></audio>
-        <audio id="audio4" src="./audio/CrabVRAudio_04a.mp3" preload="auto"></audio>
-        <audio id="audio5" src="./audio/CrabVRAudio_04b.mp3" preload="auto"></audio>
+        <audio id="audio1" src="./audio/audioExample_1.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/audioExample_2.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/audioExample_3.mp3" preload="auto"></audio>
     	</a-assets>
 
-      <a-sky src="#deepspace" render-order="background"></a-sky>
-
-      <a-entity id="textHolder"
-                    position="0 0 1000"
-                    look-at="[camera]"
-                    render-order="text"
-                    text="width: 1; color: white; align: center;
-                          anchor: center; side: double;
-                          value:  welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ">
-        </a-entity>
-
+      <!-- add and edit tour stops and camera movements here -->
       <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath="curve: #two; dur: 5000">
         <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
-        <!-- all tours go in here -->
         <a-entity id="controllerElement" controller sound="autoplay: false; volume: 0.75">
           <!-- naming convention: all lower case -->
-          <a-curve id="one" tour="dur: 6000; pauseDuration: 8000; audio: audio1; text: The Crab Nebula contains the remains of an exploded star located about 6,500 light years from Earth.">
+          <a-curve id="one" tour="dur: 6000; pauseDuration: 3000; audio: audio1; text: This is the first stop on the tour.">
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
           </a-curve>
-          <a-curve id="two" tour="dur: 6000; pauseDuration: 8000; audio: audio2; text: X-ray data from NASA's Chandra was used to create a 3D representation of the Crab's inner region, where gas is heated up to thousands of degrees">
+          <a-curve id="two" tour="dur: 6000; pauseDuration: 3000; audio: audio2; text: This is the tour's second stop.">
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
           </a-curve>
-          <a-curve id="three" tour="dur: 6000; pauseDuration: 8000; audio: audio3; text: The powerhouse 'engine' energizing the Crab system is a pulsar (a rapidly spinning neutron star), which is sending out bursts of radiation 30 times a second.">
+          <a-curve id="three" tour="dur: 6000; pauseDuration: 3000; audio: audio3; text: This is the last text on the tour.">
             <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
             <a-curve-point position="-0.6 4.4 -0.4"></a-curve-point>
-            <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
-          </a-curve>
-          <a-curve id="four" tour="dur:6000; pauseDuration: 8000; audio: audio4; text: Besides the pulsar, a ringed disk of energized material is revealed.">
-            <a-curve-point position="-3.116 -0.5 -0.4"></a-curve-point>
-            <a-curve-point position="-5.349 -0.5 4.1"></a-curve-point>
-            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
-          </a-curve>
-          <a-curve id="five" tour="dur:6000; pauseDuration: 8000; audio: audio5; text: And jets of particles fire off from opposite ends of the energetic pulsar.">
-            <a-curve-point position="-0.35 -0.5 6.6"></a-curve-point>
-            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
           </a-curve>
-          <a-curve id="six" tour="dur: 6000; pauseDuration: 8000; text: ">
+          <!-- We usually include one last stop on the tour as a vantage point -->
+          <!-- This last camera animation is also shown during the splash screen while the objects are loading -->
+          <a-curve id="four" tour="dur: 6000; pauseDuration: 8000; text: ">
             <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
             <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
             <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
@@ -81,40 +68,60 @@
         </a-entity>
       </a-entity>
 
+      <!-- place objects in the scene -->
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <!-- the tour text is initially filled with a large amount of text and placed out of view, -->
+      <!-- since the text bounding box is apparently set from the size of the initial text -->
+      <a-entity id="textHolder"
+                    position="0 0 1000"
+                    look-at="[camera]"
+                    render-order="text"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value:  welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ">
+      </a-entity>
+
       <a-entity
-        id="glowingNebula"
+        id="IC-443"
         scale="1 1 1"
         position="0 0 0"
         rotation="0 0 0">
         <a-entity
-          gltf-model="#crabJets"
-          id="crab"
-          override-noise-material="opacityThresholds: 0.27 0.48; colorRampThresholds: 0.28 0.86; highColor: #fafcff; lowColor: #0052a3;"
-          render-order="nebula"
+          id="Ejecta"
+          gltf-model="#ejecta"
           renderer="antialias: true;
-          colorManagement: true;
-          physicallyCorrectLights: true;"></a-entity>
-        <a-image 
-          width="27" 
-          height="27" 
-          src="#glow" 
-          look-at="[camera]"
-          render-order="clouds"
-          material="transparent: true; opacity: 0.4; alphaTest: 0.01; depthTest: false; color: #5553df"></a-image>
-      </a-entity>        
-
+          colorManagement: true;"
+          render-order="nebula"
+          transparent-edge-material="
+            opaqueAngle: 1.0;
+            transparentAngle: 0.5;
+          ">
+        </a-entity>
+        <a-entity
+          id="Blast Wave"
+          gltf-model="#blastwave"
+          renderer="antialias: true;
+          colorManagement: true;"
+          render-order="nebula"
+          transparent-edge-material="
+            opaqueAngle: -0.2;
+            transparentAngle: 0.5;
+          ">
+        </a-entity>
+      </a-entity>
     </a-scene>
-
+    
     <div id="splash">
       <div id="splash-inner">
-        <div class="title">Crab Nebula</div>
+        <div class="title">Tour template</div>
         <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
         <div class="sub-title">VR by <a href="https://www.nasa.gov/">NASA</a>,
         <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
         <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
         <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
-      <br />
-    </div>
+        <br />
       </div>
     </div>
 

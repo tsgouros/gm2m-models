@@ -9,12 +9,12 @@
     <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
   <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
-    <script type="text/javascript" src="../../index.js"></script>
-    <script type="text/javascript" src="../../tour.js"></script>
-    <script type="text/javascript" src="../../controller.js"></script>
-    <script type="text/javascript" src="../../lookat.js"></script>
-    <script type="text/javascript" src="../../override-tycho-hue-material_v2.js"></script>
-    <script type="text/javascript" src="../../override-tycho-halo-material.js"></script>
+    <script type="text/javascript" src="../../tourScripts/index.js"></script>
+    <script type="text/javascript" src="../../tourScripts/tour.js"></script>
+    <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="./materials/override-tycho-hue-material_v2.js"></script>
+    <script type="text/javascript" src="./materials/override-tycho-halo-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -22,7 +22,7 @@
              render-order="background, nebula, clouds, text"
              >
     	<a-assets> <!-- add the gltf models here -->
-        <img id="deepspace" src="../../deepspace.png">
+        <img id="deepspace" src="../../textures/deepspace.png">
         <a-asset-item id="tycho" src="../../gltf/tycho_v2.glb"></a-asset-item>
         <a-asset-item id="tychoHaloGltf" src="../../gltf/tycho_halo_v1.glb"></a-asset-item>
         <img id="glow" src="../../textures/glow1.png">

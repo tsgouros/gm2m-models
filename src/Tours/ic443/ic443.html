@@ -9,14 +9,14 @@
     <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
-    <script type="text/javascript" src="../../index.js"></script>
-    <script type="text/javascript" src="../../tour.js"></script>
-    <script type="text/javascript" src="../../lookat.js"></script>
-    <script type="text/javascript" src="../../override-ic443-ejecta-material.js"></script>
-    <script type="text/javascript" src="../../override-ic443-torus-material.js"></script>
-    <script type="text/javascript" src="../../override-ic443-blastwave-material.js"></script>
-    <script type="text/javascript" src="../../override-ic443-nebula-material.js"></script>
-    <script type="text/javascript" src="../../controller.js"></script>
+    <script type="text/javascript" src="../../tourScripts/index.js"></script>
+    <script type="text/javascript" src="../../tourScripts/tour.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-ejecta-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-torus-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-blastwave-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-nebula-material.js"></script>
   </head>
   <body>
     <a-scene id="mainScene"
@@ -24,7 +24,7 @@
              render-order="background, nebula, clouds, text"
              >
     	<a-assets> <!-- add the gltf models here -->
-        <img id="deepspace" src="../../deepspace.png">
+        <img id="deepspace" src="../../textures/deepspace.png">
         <a-asset-item id="ic443Ejecta" src="../../gltf/ic443_ejecta.glb"></a-asset-item>
         <a-asset-item id="ic443Nebula" src="../../gltf/ic443_nebula.glb"></a-asset-item>
         <a-asset-item id="ic443Blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
