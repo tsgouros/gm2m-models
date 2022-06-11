@@ -1,13 +1,14 @@
 AFRAME.registerComponent('override-tycho-material', {
   schema: {
     viewOpacityThresholds: {type: 'vec2', default: {x: 0.0, y: 0.3} },
-    distanceOpacityThresholds: {type: 'vec2', default: {x: 2.6, y: 3.4} }
+    distanceOpacityThresholds: {type: 'vec2', default: {x: 2.6, y: 3.4} },
   },
 
   uniforms: {
     emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/Tycho_Color2Alpha2_v1.png")},
     viewOpacityThresholds: {type: 'vec2', value: {x: 0.0, y: 0.3} },
-    distanceOpacityThresholds: {type: 'vec2', value: {x: 2.6, y: 3.4} }
+    distanceOpacityThresholds: {type: 'vec2', value: {x: 2.6, y: 3.4} },
+    objectPos: {type: 'vec3', value: {x: 0.0, y: 0.0, z: 0.0} }
   },
 
   init: function () {
@@ -18,6 +19,8 @@ varying float opacityExponent;
 varying float smoothEdgeOpacity;
 varying float hueOffset;
 varying vec3 vertexPos;
+
+uniform vec3 objectPos;
 
 uniform vec2 viewOpacityThresholds;
 uniform vec2 distanceOpacityThresholds;
@@ -42,8 +45,10 @@ float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
     vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
     vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
 
+    vec3 objSpacePos = worldPosition.xyz - objectPos;
+
     vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-    vec3 worldNormalSmooth = normalize(worldPosition.xyz);
+    vec3 worldNormalSmooth = normalize(objSpacePos);
 
     vec3 I = normalize( cameraPosition - worldPosition.xyz );
 
@@ -151,6 +156,12 @@ vec3 hsv2rgb(vec3 c)
           // get the emissive map: 
           // this.uniforms.emissionTex.value = node.material.emissiveMap;
           // fresMaterial.uniforms = this.uniforms;
+
+          let objPos = new THREE.Vector3();
+          node.getWorldPosition( objPos );
+          this.uniforms.objectPos.value = objPos;
+          console.log("object position:");
+          console.log(this.uniforms.objectPos.value);
 
           node.material = fresMaterial;
           node.material.depthTest = false;

@@ -1,27 +1,25 @@
-AFRAME.registerComponent('override-tycho-material', {
+AFRAME.registerComponent('override-catseye-inner', {
   schema: {
     viewOpacityThresholds: {type: 'vec2', default: {x: 0.0, y: 0.3} },
     distanceOpacityThresholds: {type: 'vec2', default: {x: 2.6, y: 3.4} }
   },
 
   uniforms: {
-    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/Tycho_v3_4k.png")},
+    emissionTex: { type: 't' , value: new THREE.TextureLoader().load("../../textures/catseye_InnerNebula_AR.png")},
     viewOpacityThresholds: {type: 'vec2', value: {x: 0.0, y: 0.3} },
-    distanceOpacityThresholds: {type: 'vec2', value: {x: 2.6, y: 3.4} },
-    objectPos: {type: 'vec3', value: {x: 0.0, y: 0.0, z: 0.0} }
+    distanceOpacityThresholds: {type: 'vec2', value: {x: 2.6, y: 3.4} }
   },
 
   init: function () {
 
     const vertexShader = `
 varying vec2 vUv;
-varying float opacityScalar;
-varying float hueOffset;
+varying float edgeOpacity;
+varying float centerDarkening;
+varying float edgeLightening;
 
 uniform vec2 viewOpacityThresholds;
 uniform vec2 distanceOpacityThresholds;
-
-uniform vec3 objectPos;
 
 float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
@@ -41,30 +39,24 @@ float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
     vUv = uv;
 
     vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
     vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-    //vec4 worldNormalFour = modelMatrix * vec4( normal, 1.0 );
-    //vec3 worldNormal = worldNormalFour.xyz;
-    vec3 objSpacePos = worldPosition.xyz - objectPos;
-
-    vec3 worldNormal = normalize(mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal);
-    vec3 worldNormalSmooth = normalize(objSpacePos.xyz);
-
+    vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
     vec3 I = normalize( cameraPosition - worldPosition.xyz );
-
     float viewAngleFine = dot( I, worldNormal );
-    float viewAngleSmooth = dot( I, worldNormalSmooth );
-    float vertexDistance = length(position.xyz);
+    edgeOpacity = smoothstep( 0.5, 0.6, viewAngleFine) * (smoothstep(0.9, 0.75, viewAngleFine) * 0.5 + 0.5);
 
-    hueOffset = map( viewAngleSmooth, -1.0, 1.0, -0.1, 0.5);
-
-    opacityScalar = mapSmoothed( abs(viewAngleFine), 0.5, 1.0, 0.0, 1.0);
+    edgeLightening = mapSmoothed(viewAngleFine, 0.5, 0.85, 0.0, 0.05);
+    centerDarkening = mapSmoothed(viewAngleFine, 0.5, 1.0, 0.5, 0.0);
 
     gl_Position = projectionMatrix * mvPosition;
   }
 `;
 const fragmentShader = `
+// Use low precision.
+  precision lowp float;
 
-float map(float value, float min1, float max1, float min2, float max2) {
+  float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
@@ -77,67 +69,25 @@ float mapSmoothed(float value, float min1, float max1, float min2, float max2) {
   return map( smoothedValue, 0.0, 1.0, min2, max2 );
 }
 
-// Use low precision.
-  precision lowp float;
-
-  // hsv/rgb conversions by sam hocevar
-vec3 rgb2hsv(vec3 c)
-{
-    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-    float d = q.x - min(q.w, q.y);
-    float e = 1.0e-10;
-    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-vec3 hsv2rgb(vec3 c)
-{
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-
   uniform sampler2D emissionTex;
+  uniform sampler2D alphaTex;
 
   varying vec2 vUv;
-
-  varying float opacityScalar;
-  varying float hueOffset;
+  varying float edgeOpacity;
+  varying float edgeLightening;
+  varying float centerDarkening;
 
   void main () {
 
     vec4 srcImg = texture2D(emissionTex, vec2(vUv.x, 1.0 - vUv.y));
+    vec3 srcTexture = srcImg.rgb;
+    float srcAlpha = srcImg.a;
 
-    // scale source image into the range needed for the color and alpha ramps 
-    float srcRamp = mapClamped(srcImg.r, 0.0, 1.0, 0.4, 0.9);
+    vec3 srcCenterDarkened = max(srcTexture - vec3(centerDarkening), 0.0);
+    vec3 srcEdgeLightened = vec3(1.0) - (vec3(1.0) - srcCenterDarkened) * vec3(1.0 - edgeLightening);
+    vec3 finalColor = mix(srcCenterDarkened, srcEdgeLightened, 0.5);
 
-    // generate the color from the source ramp 
-    vec3 saturatedColor = vec3(0.0, 0.053, 0.205);
-    vec3 whiteColor = vec3(1.0);
-    float colorRamp = mapSmoothed(srcRamp, 0.636, 1.0, 0.0, 1.0);
-
-    // color before hue shift
-    vec3 baseColor = mix(saturatedColor, whiteColor, colorRamp);
-
-    vec3 baseColorHsv = rgb2hsv( baseColor );
-    vec3 hueShiftedHsv = baseColorHsv + vec3( hueOffset + 2.5, 0.0, 0.0 );
-    hueShiftedHsv = mod( hueShiftedHsv, vec3( 1.0, 2.0, 2.0 ));
-    hueShiftedHsv *= vec3( 1.0, 1.3, 1.8 );
-
-    vec3 hueShiftedRgb = hsv2rgb( hueShiftedHsv );
-
-    vec3 rgbOut = mix(hueShiftedRgb, smoothstep(0.0, 1.0, hueShiftedRgb), vec3(1.0));
-
-    // generate the alpha ramp from the source ramp
-    float alphaRamp = mapClamped(srcRamp, 0.64, 0.827, 0.0, 1.0);
-
-    //float opacity = pow(alphaRamp, (1.0 - opacityScalar) * 5.3 + 1.0) * opacityScalar;
-    float opacity = alphaRamp * opacityScalar;
-
-    gl_FragColor = vec4( rgbOut, opacity );
+    gl_FragColor = vec4( finalColor, srcAlpha * edgeOpacity );
   }
 `;
 
@@ -147,12 +97,15 @@ vec3 hsv2rgb(vec3 c)
       fragmentShader
     });
     fresMaterial.transparent = true;
+    this.uniforms.emissionTex.encoding = THREE.LinearEncoding;
 
     let el = this.el;
     let comp = this;
     let data = this.data;
     comp.scene = el.sceneEl.object3D;  
     comp.modelLoaded = false;
+
+    let thisComponent = this;
 
     // After gltf model has loaded, modify its materials.
     el.addEventListener('model-loaded', function(ev){
@@ -166,15 +119,11 @@ vec3 hsv2rgb(vec3 c)
           // this.uniforms.emissionTex.value = node.material.emissiveMap;
           // fresMaterial.uniforms = this.uniforms;
 
-          let objPos = new THREE.Vector3();
-          node.getWorldPosition( objPos );
-          comp.uniforms.objectPos.value = objPos;
-
           node.material = fresMaterial;
           node.material.depthTest = false;
           // node.material.blending = THREE.AdditiveBlending;
-          //node.material.side = THREE.FrontSide;
-          node.material.side = THREE.DoubleSide;
+          //node.material.side = THREE.DoubleSide;
+          node.material.side = THREE.FrontSide;
 
           const tempGeometry = new THREE.Geometry().fromBufferGeometry(node.geometry);
 
@@ -184,7 +133,7 @@ vec3 hsv2rgb(vec3 c)
 
           node.geometry = new THREE.BufferGeometry().fromGeometry(tempGeometry);
 
-        }
+        } 
       });
       comp.modelLoaded = true;
     });  
