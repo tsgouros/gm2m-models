@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SN 1006</title>
+    <link href="../../style.css" rel="stylesheet">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+  <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../../tourScripts/index.js"></script>
+    <script type="text/javascript" src="../../tourScripts/tour.js"></script>
+    <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="./materials/override-sn1006-material.js"></script>
+    <script type="text/javascript" src="./materials/override-sn1006-blast-material.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             render-order="background, nebula, clouds, text"
+             >
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="deepspace" src="../../textures/deepspace.png">
+        <a-asset-item id="sn1006" src="../../gltf/sn1006_decimated.glb"></a-asset-item>
+        <a-asset-item id="sn1006Blast" src="../../gltf/sn1006_blast.glb"></a-asset-item>
+        <img id="glow" src="../../textures/glow1.png">
+        <audio id="audio1" src="./audio/SN1006_01.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/SN1006_02.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/SN1006_03.mp3" preload="auto"></audio>
+        <audio id="audio4" src="./audio/SN1006_04.mp3" preload="auto"></audio>
+        <audio id="audio5" src="./audio/SN1006_05.mp3" preload="auto"></audio>
+        <audio id="audio6" src="./audio/SN1006_06.mp3" preload="auto"></audio>
+    	</a-assets>
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 1000"
+                    look-at="[camera]"
+                    render-order="text"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath="curve: #eight; dur: 5000">
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <!-- all tours go in here -->
+        <a-entity id="controllerElement" controller sound="autoplay: false; volume: 0.75">
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur: 6000; pauseDuration: 9000; audio: audio1; text: Over 1,000 years ago, ancient observers were treated to the celestial fireworks display of this exploded star in their sky.">
+            <a-curve-point position="0.0 -3.1 2."></a-curve-point>
+            <a-curve-point position="-0.1 -1.9 3.1"></a-curve-point>
+            <a-curve-point position="-0.3 -1.8 3.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="dur: 6000; pauseDuration: 15000; audio: audio2; text: Astronomers now understand that SN (Supernova) 1006 was caused by a white dwarf star that captured mass from a companion star until the white dwarf became unstable and exploded.">
+            <a-curve-point position="-0.3 -1.8 3.6"></a-curve-point>
+            <a-curve-point position="2.9 -1.4 6.3"></a-curve-point>
+            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur: 6000; pauseDuration: 10000; audio: audio3; text: Recent observations of the remnant of SN 1006 reveal the release of elements such as iron that were previously locked up inside the star.">
+            <a-curve-point position="5.1 -1.8 2.6"></a-curve-point>
+            <a-curve-point position="3.6 2.1 0.1"></a-curve-point>
+            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="four" tour="dur:6000; pauseDuration: 23000; audio: audio4; text: This 3D model of SN 1006 was created by constraining mathematical models of the object with data captured by NASA's Chandra X-ray Observatory.  The result helps explore how the clumping of material after the explosion and the acceleration of high-energy particles affects the structure of the remnant.">
+            <a-curve-point position="3.2 2.3 -2.7"></a-curve-point>
+            <a-curve-point position="-1.2 -0.2 -5.7"></a-curve-point>
+            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
+          </a-curve>
+          <a-curve id="five" tour="dur:6000; pauseDuration: 12000; audio: audio5; text: A ball of fiery-looking stellar debris and heavy elements has been shot into the interstellar medium with speeds of tens of thousands of miles per hour. ">
+            <a-curve-point position="-3.8 0.0 -5.1"></a-curve-point>
+            <a-curve-point position="-5.3 -1.5 -0.1"></a-curve-point>
+            <a-curve-point position="0.0 -3.1 2."></a-curve-point>
+          </a-curve>
+          <a-curve id="six" tour="dur: 6000; pauseDuration: 7500; audio: audio6; text: The material is heated up to temperatures of tens of millions of degrees that Chandra observes in X-ray light.">
+            <a-curve-point position="0.0 -3.1 2."></a-curve-point>
+            <a-curve-point position="-0.1 -1.9 6.1"></a-curve-point>
+            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="seven" tour="dur: 6000; pauseDuration: 8000; text: ">
+            <a-curve-point position="-0.3 -1.8 8.6"></a-curve-point>
+            <a-curve-point position="-0.3 -1.9 6.1"></a-curve-point>
+            <a-curve-point position="-0.3 -2.0 5.6"></a-curve-point>
+          </a-curve>
+          <a-curve id="eight" tour="dur: 6000; pauseDuration: 8000; text: ">
+            <a-curve-point position="-0.0 -0.1 0."></a-curve-point>
+            <a-curve-point position="-0.0 -1.9 1.1"></a-curve-point>
+            <a-curve-point position="0.0 -3.1 2."></a-curve-point>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="glowingNebula"
+        scale="0.5 0.5 0.5"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          gltf-model="#sn1006"
+          id="sn1006_model"
+          override-sn1006-material="noiseAmt: 0.0;"
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity 
+          gltf-model="#sn1006Blast"
+          scale="0.98"
+          id="sn1006_blast"
+          render-order="clouds"
+          override-sn1006-blast-material
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+
+      </a-entity>        
+
+    </a-scene>
+
+    <div id="splash">
+      <div id="splash-inner">
+        <div class="title">SN 1006</div>
+        <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
+        <div class="sub-title">VR by <a href="https://www.nasa.gov/">NASA</a>,
+        <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
+        <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
+        <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
+      <br />
+    </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    // This stuff is down here at the end because it has to run as soon as
+    // all the a-frame assets are loaded.  It manages the splash screen shown
+    // above, by pausing the action as soon as everything is loaded, and then by
+    // executing .play() when the start button is pressed.
+
+    // Pause action as soon as everything is loaded.
+    document.getElementById("mainScene").addEventListener("loaded",
+      function() {
+        document.getElementById("go-button").style.display = "flex";
+    });
+
+    pressStart = function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("go-button").style.display = "none";
+
+      // Load all the sounds and play-then-pause them all, to get them
+      // permission to run under the iOS rules, which say that a sound
+      // can only be played as a result of a user action.
+      var sounds = document.getElementsByTagName('audio');
+
+      for (i = 0; i < sounds.length; i++) {
+        // console.log("playing, then pausing:", sounds[i]);
+        var promise = sounds[i].play(); 
+
+        if (promise) {
+            //console.log("PLAYING:", promise);
+            sounds[i].pause();
+            sounds[i].currentTime = 0;
+
+          promise.catch(function(e) { 
+            console.log(e); 
+            console.log(e.name); 
+            console.log(e.message); 
+            console.log(e.code); 
+          });
+        }      
+      }
+
+      var controllerComponent = document.querySelector('[controller]').components.controller;;
+      controllerComponent.startTour();
+    }
+  </script>
+
+  </body>
+</html>

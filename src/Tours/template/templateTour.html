@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tour template</title>
+
+    <!-- load stylesheet -->
+    <link href="../../style.css" rel="stylesheet">
+    
+    <!-- load A-frame code -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+
+    <!-- load general tour code -->  
+    <script type="text/javascript" src="../../tourScripts/index.js"></script>
+    <script type="text/javascript" src="../../tourScripts/tour.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+
+    <!-- load any custom components/materials -->
+    <script type="text/javascript" src="../../materials/transparent-edge-material.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+      background="color: #000000"
+      render-order="background, nebula, text">
+      >
+
+      <!-- load gltf models, audio, and images here -->
+    	<a-assets>
+        <a-asset-item id="ejecta" src="../../gltf/ic443_ejecta.glb"></a-asset-item>
+        <a-asset-item id="blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
+        <img id="deepspace" src="../../textures/deepspace.png">
+        <audio id="audio1" src="./audio/audioExample_1.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/audioExample_2.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/audioExample_3.mp3" preload="auto"></audio>
+    	</a-assets>
+
+      <!-- add and edit tour stops and camera movements here -->
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath="curve: #two; dur: 5000">
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <a-entity id="controllerElement" controller sound="autoplay: false; volume: 0.75">
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur: 6000; pauseDuration: 3000; audio: audio1; text: This is the first stop on the tour.">
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="dur: 6000; pauseDuration: 3000; audio: audio2; text: This is the tour's second stop.">
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+            <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur: 6000; pauseDuration: 3000; audio: audio3; text: This is the last text on the tour.">
+            <a-curve-point position="0.7 -0.6 4.3"></a-curve-point>
+            <a-curve-point position="-0.6 4.4 -0.4"></a-curve-point>
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+          </a-curve>
+          <!-- We usually include one last stop on the tour as a vantage point -->
+          <!-- This last camera animation is also shown during the splash screen while the objects are loading -->
+          <a-curve id="four" tour="dur: 6000; pauseDuration: 8000; text: ">
+            <a-curve-point position="2.8 -0.5 -5.5"></a-curve-point>
+            <a-curve-point position="2.8 5.4 -.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+      <!-- place objects in the scene -->
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <!-- the tour text is initially filled with a large amount of text and placed out of view, -->
+      <!-- since the text bounding box is apparently set from the size of the initial text -->
+      <a-entity id="textHolder"
+                    position="0 0 1000"
+                    look-at="[camera]"
+                    render-order="text"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value:  welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ">
+      </a-entity>
+
+      <a-entity
+        id="IC-443"
+        scale="1 1 1"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          id="Ejecta"
+          gltf-model="#ejecta"
+          renderer="antialias: true;
+          colorManagement: true;"
+          render-order="nebula"
+          transparent-edge-material="
+            opaqueAngle: 1.0;
+            transparentAngle: 0.5;
+          ">
+        </a-entity>
+        <a-entity
+          id="Blast Wave"
+          gltf-model="#blastwave"
+          renderer="antialias: true;
+          colorManagement: true;"
+          render-order="nebula"
+          transparent-edge-material="
+            opaqueAngle: -0.2;
+            transparentAngle: 0.5;
+          ">
+        </a-entity>
+      </a-entity>
+    </a-scene>
+    
+    <div id="splash">
+      <div id="splash-inner">
+        <div class="title">Tour template</div>
+        <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
+        <div class="sub-title">VR by <a href="https://www.nasa.gov/">NASA</a>,
+        <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
+        <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
+        <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
+        <br />
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    // This stuff is down here at the end because it has to run as soon as
+    // all the a-frame assets are loaded.  It manages the splash screen shown
+    // above, by pausing the action as soon as everything is loaded, and then by
+    // executing .play() when the start button is pressed.
+
+    // Pause action as soon as everything is loaded.
+    document.getElementById("mainScene").addEventListener("loaded",
+      function() {
+        document.getElementById("go-button").style.display = "flex";
+    });
+
+    pressStart = function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("go-button").style.display = "none";
+
+      // Load all the sounds and play-then-pause them all, to get them
+      // permission to run under the iOS rules, which say that a sound
+      // can only be played as a result of a user action.
+      var sounds = document.getElementsByTagName('audio');
+
+      for (i = 0; i < sounds.length; i++) {
+        // console.log("playing, then pausing:", sounds[i]);
+        var promise = sounds[i].play(); 
+
+        if (promise) {
+            //console.log("PLAYING:", promise);
+            sounds[i].pause();
+            sounds[i].currentTime = 0;
+
+          promise.catch(function(e) { 
+            console.log(e); 
+            console.log(e.name); 
+            console.log(e.message); 
+            console.log(e.code); 
+          });
+        }      
+      }
+
+      var controllerComponent = document.querySelector('[controller]').components.controller;;
+      controllerComponent.startTour();
+    }
+  </script>
+
+  </body>
+</html>
