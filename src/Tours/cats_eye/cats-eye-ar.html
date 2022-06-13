@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cat's Eye</title>
+    <link href="../../style.css" rel="stylesheet">
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../../tourScripts/aframe-spritesheet-animation.js"></script>
+    <script type="text/javascript" src="./materials/override-catseye-outer.js"></script>
+    <script type="text/javascript" src="./materials/override-catseye-inner-ar.js"></script>
+    <script type="text/javascript" src="./materials/override-catseye-xray.js"></script>
+    <script type="text/javascript" src="./materials/override-catseye-sphere.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="../../tourScripts/multitouch-controls.js"></script>
+    <script type="text/javascript" src="../../tourScripts/clickhandler.js"></script>
+    <script type="text/javascript" src="../../tourScripts/ar-text.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #030303"
+             render-order="background, rainbow, xray, nebula, rainbowOverlay, ui, text"
+             >
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="sheet" src="../../textures/ar-click-sprite.png"/>
+        <a-asset-item id="catseye_outer_nebula" src="../../gltf/catseye_outer_nebula.glb"></a-asset-item>
+        <a-asset-item id="catseye_inner_nebula" src="../../gltf/catseye_inner_nebula_ar.glb"></a-asset-item>
+        <a-asset-item id="catseye_xray" src="../../gltf/catseye_xray.glb"></a-asset-item>
+        <a-asset-item id="catseye_sphere" src="../../gltf/catseye_sphere.glb"></a-asset-item>
+        <audio id="audio1" preload="auto" src="./audioAR/CATSEYE.ogg"></audio>
+        <audio id="audio2" preload="auto" src="./audioAR/CATSEYE_concentricrings.ogg"></audio>
+        <audio id="audio3" preload="auto" src="./audioAR/CATSEYE_dyingstar.ogg"></audio>
+        <audio id="audio4" preload="auto" src="./audioAR/CATSEYE_gaseousfilaments.ogg"></audio>
+    	</a-assets>
+
+      <a-entity id="camera" camera="active: true" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true">
+        <a-entity position="0 0 -0.05"
+                geometry="primitive: ring; radiusInner: 0.0015; radiusOuter: 0.002;"
+                material="color: #ccc; shader: flat;"
+                animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+                cursor="fuse: true;"
+                raycaster="objects: .clickable">
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="objs"
+        scale="0.1 0.1 0.1"
+        position="0 1 -1"
+        rotation="0 0 0">
+
+        <!-- AR text markers -->
+        <a-entity 
+          ar-text=" title: Cat's Eye Nebula; 
+                    description: When stars like our sun run out of fuel, they enter a phase like the Cat's Eye Nebula;
+                    audio: audio1;"
+          position="0 7.07 0"
+        ></a-entity>
+
+        <a-entity 
+          ar-text=" title: Concentric Rings; 
+                    description: A bull's-eye pattern of spherical dust rings can be seen around Cat's Eye;
+                    audio: audio2;"
+          position="4.27 -2.2 -0.23"
+        ></a-entity>
+
+        <a-entity 
+          ar-text=" title: Gaseous Filaments; 
+                    description: A wind blowing from the central star rams into the ejected layers, creating these spectacular filamentary structures;
+                    audio: audio4;"
+          position="-3.54 4.45 0.0"
+        ></a-entity>
+
+        <a-entity 
+          ar-text=" title: Dying Star; 
+                    description: The star at the center of the nebula illuminates nearby discarded material;
+                    audio: audio3;"
+          position="1.2 0.0 0.0"
+        ></a-entity>
+
+        <a-entity
+          gltf-model="#catseye_outer_nebula"
+          id="outer_nebula"
+          override-catseye-outer="noiseAmt: 0.0;"
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#catseye_inner_nebula"
+          render-order="nebula"
+          override-catseye-inner
+          scale="0.03 0.03 0.03"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#catseye_xray"
+          render-order="nebula"
+          override-catseye-xray
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+
+        <a-entity 
+          gltf-model="#catseye_sphere"
+          scale="1.2 1.2 1.2"
+          look-at="[camera]"
+          render-order="rainbow"
+          override-catseye-sphere
+          material="transparent: true; depthTest: false;"></a-entity>
+        <a-entity 
+          gltf-model="#catseye_sphere"
+          scale="0.7 0.7 0.7"
+          rotation="90 0 0 "
+          translation="0 0 0.2"
+          override-catseye-sphere="opacity: 0.35;"
+          look-at="[camera]"
+          render-order="rainbowOverlay"
+          material="transparent: true; depthTest: false;"></a-entity>
+      </a-entity>
+      </a-entity>
+
+    </a-scene>
+
+    <div id="splash">
+      <div id="splash-inner">
+        <div class="title">Cat's Eye</div>
+        <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
+        <div class="sub-title">AR by <a href="https://www.nasa.gov/">NASA</a>,
+        <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
+        <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
+        <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
+      <br />
+    </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    // This stuff is down here at the end because it has to run as soon as
+    // all the a-frame assets are loaded.  It manages the splash screen shown
+    // above, by pausing the action as soon as everything is loaded, and then by
+    // executing .play() when the start button is pressed.
+
+    // Pause action as soon as everything is loaded.
+    document.getElementById("mainScene").addEventListener("loaded",
+      function() {
+        document.getElementById("go-button").style.display = "flex";
+    });
+
+    pressStart = function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("go-button").style.display = "none";
+
+      // Load all the sounds and play-then-pause them all, to get them
+      // permission to run under the iOS rules, which say that a sound
+      // can only be played as a result of a user action.
+      var sounds = document.getElementsByTagName('audio');
+
+      for (i = 0; i < sounds.length; i++) {
+        // console.log("playing, then pausing:", sounds[i]);
+        var promise = sounds[i].play(); 
+
+        if (promise) {
+            //console.log("PLAYING:", promise);
+            sounds[i].pause();
+            sounds[i].currentTime = 0;
+
+          promise.catch(function(e) { 
+            console.log(e); 
+            console.log(e.name); 
+            console.log(e.message); 
+            console.log(e.code); 
+          });
+        }      
+      }
+
+      var controllerComponent = document.querySelector('[controller]').components.controller;;
+      controllerComponent.startTour();
+    }
+  </script>
+
+  </body>
+</html>

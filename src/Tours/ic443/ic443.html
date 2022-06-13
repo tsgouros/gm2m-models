@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IC 443</title>
+    <link href="../../style.css" rel="stylesheet">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-render-order-component@1.1.0/dist/aframe-render-order-component.min.js"></script>
+    <script type="text/javascript" src="../../tourScripts/index.js"></script>
+    <script type="text/javascript" src="../../tourScripts/tour.js"></script>
+    <script type="text/javascript" src="../../tourScripts/lookat.js"></script>
+    <script type="text/javascript" src="../../tourScripts/controller.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-ejecta-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-torus-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-blastwave-material.js"></script>
+    <script type="text/javascript" src="./materials/override-ic443-nebula-material.js"></script>
+  </head>
+  <body>
+    <a-scene id="mainScene"
+             background="color: #FAFAFA"
+             render-order="background, nebula, clouds, text"
+             >
+    	<a-assets> <!-- add the gltf models here -->
+        <img id="deepspace" src="../../textures/deepspace.png">
+        <a-asset-item id="ic443Ejecta" src="../../gltf/ic443_ejecta.glb"></a-asset-item>
+        <a-asset-item id="ic443Nebula" src="../../gltf/ic443_nebula.glb"></a-asset-item>
+        <a-asset-item id="ic443Blastwave" src="../../gltf/ic443_blastwave.glb"></a-asset-item>
+        <a-asset-item id="ic443Torus" src="../../gltf/ic443_torus.glb"></a-asset-item>
+        <audio id="audio1" src="./audio/IC443_VRNarration_01.mp3" preload="auto"></audio>
+        <audio id="audio2" src="./audio/IC443_VRNarration_02.mp3" preload="auto"></audio>
+        <audio id="audio3" src="./audio/IC443_VRNarration_03.mp3" preload="auto"></audio>
+        <audio id="audio4" src="./audio/IC443_VRNarration_04.mp3" preload="auto"></audio>
+        <audio id="audio5" src="./audio/IC443_VRNarration_05.mp3" preload="auto"></audio>
+        <audio id="audio6" src="./audio/IC443_VRNarration_06.mp3" preload="auto"></audio>
+    	</a-assets>
+
+      <a-sky src="#deepspace" render-order="background"></a-sky>
+
+      <a-entity id="textHolder"
+                    position="0 0 1000"
+                    look-at="[camera]"
+                    render-order="text"
+                    text="width: 1; color: white; align: center;
+                          anchor: center; side: double;
+                          value: welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! welcome! ;">
+        </a-entity>
+
+      <a-entity id="rig" rotation="0 0 0" position="0 0 0" wasd-controls look-controls="pointerLockEnabled: true" alongpath="curve: #six; dur: 6000">
+        <a-entity id="camera" camera="active: true" position="0 0 0"></a-entity>
+        <!-- all tours go in here -->
+        <a-entity id="controllerElement" controller sound="autoplay: false; volume: 0.75">
+          <!-- naming convention: all lower case -->
+          <a-curve id="one" tour="dur: 5000; pauseDuration: 11000; audio: audio1; text: About 5,000 light years from Earth, IC 443 is a beautiful supernova remnant, the leftover debris from an exploded star.; textPos: 0.7 -0.5 6.7; textRot: 0 0 0;">
+            <a-curve-point position="-1.0 -0.4 1.5"></a-curve-point>
+            <a-curve-point position="0.6 -0.5 6."></a-curve-point>
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+          </a-curve>
+          <a-curve id="two" tour="dur: 5000; pauseDuration: 9000; audio: audio2; text: The 3D model shows a shock wave (similar to a sonic boom produced by a jet) and a nearby cloud of gas.; textPos: 2.9 -1 1.75; textRot: 15 55 0">
+            <a-curve-point position="0.7 -0.5 7.7"></a-curve-point>
+            <a-curve-point position="3.2 -1.2 3.1"></a-curve-point>
+            <a-curve-point position="3.7 -1.3 2.3"></a-curve-point>
+          </a-curve>
+          <a-curve id="three" tour="dur:7000; pauseDuration: 9500; audio: audio3; text: The shock wave and the remains of the star (red, yellow, and blue) have collided with the gas cloud and are now passing through it.; textPos: -1.07 0.26 1.17; textRot: -7.8 -71 0">
+            <a-curve-point position="3.7 -1.3 2.3"></a-curve-point>
+            <a-curve-point position="0.0 -0.2 3.7"></a-curve-point>
+            <a-curve-point position="-1.9 0.3 1.65"></a-curve-point>
+            <a-curve-point position="-2.0 0.4 1.5"></a-curve-point>
+          </a-curve>
+          <a-curve id="four" tour="dur:6000; pauseDuration: 9500; audio: audio4; text: The different colors for the star's remains show the range of velocities for their motion away from the center of the explosion.; textPos: 1.08 0.4 2.53; textRot: -11.8 6.8 0">
+<!--             <a-curve-point position="0.9 1.2 4.2"></a-curve-point> -->
+            <a-curve-point position="-2.0 0.4 1.5"></a-curve-point>
+<!--             <a-curve-point position="1.0 1.1 4.1"></a-curve-point>
+            <a-curve-point position="0.9 1.2 4.2"></a-curve-point> -->
+            <a-curve-point position="0.0 0.9 4.0"></a-curve-point>
+            <a-curve-point position="1.1 0.55 3.6"></a-curve-point>
+            <a-curve-point position="1.2 0.6 3.5"></a-curve-point>
+          </a-curve>
+          <a-curve id="five" tour="dur:5000; pauseDuration: 14000; audio: audio5; text: A source of X-rays discovered with Chandra (bright blue, at center) likely contains the neutron star that formed when a massive star collapsed and exploded to create IC 443.; textPos: 0.9 -0.46 0.05; textRot: 11.5 -14 0">
+            <a-curve-point position="1.2 0.6 3.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.6 1.4"></a-curve-point>
+            <a-curve-point position="0.66 -0.66 1.0"></a-curve-point>
+          </a-curve>
+          <a-curve id="six" tour="dur:5000; pauseDuration: 10000; audio: audio6; text: The 3D model shows that the explosion was weaker than most supernovas, and that it occurred about 8,000 years ago, in Earth's time frame.; textPos: -0.23 -0.49 0.87; textRot: -5.39 51 0;">
+            <a-curve-point position="0.66 -0.66 1.0"></a-curve-point>
+            <a-curve-point position="-0.9 -0.3 1.4"></a-curve-point>
+            <a-curve-point position="-1.0 -0.4 1.5"></a-curve-point>
+          </a-curve>
+          <a-curve id="seven" tour="dur: 5000; pauseDuration: 11000; audio: audio1; text: ;">
+            <a-curve-point position="-1.0 -0.4 1.5"></a-curve-point>
+            <a-curve-point position="0.6 -0.5 3.5"></a-curve-point>
+            <a-curve-point position="0.7 -0.5 4.7"></a-curve-point>
+          </a-curve>
+        </a-entity>
+      </a-entity>
+
+      <a-entity
+        id="ic443"
+        scale="0.5 0.5 0.5"
+        position="0 0 0"
+        rotation="0 0 0">
+        <a-entity
+          gltf-model="#ic443Torus"
+          id="ic443TorusEntity"
+          override-ic443-torus-material
+          render-order="clouds"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Blastwave"
+          id="ic443BlastwaveEntity"
+          override-ic443-blastwave-material
+          render-order="clouds"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Nebula"
+          id="ic443NebulaEntity"
+          override-ic443-nebula-material
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+        <a-entity
+          gltf-model="#ic443Ejecta"
+          id="ic443EjectaEntity"
+          override-ic443-ejecta-material
+          render-order="nebula"
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity>
+
+<!--         <a-entity 
+          gltf-model="#tychoHaloGltf"
+          scale="0.95 0.95 0.95"
+          id="tycho_halo"
+          render-order="clouds"
+          override-tycho-halo-material
+          renderer="antialias: true;
+          colorManagement: true;
+          physicallyCorrectLights: true;"></a-entity> -->
+
+      </a-entity>        
+
+    </a-scene>
+
+    <div id="splash">
+      <div id="splash-inner">
+        <div class="title">IC 443</div>
+        <div id="go-button" onclick="pressStart()" style="display: none;">Start</div>
+        <div class="sub-title">VR by <a href="https://www.nasa.gov/">NASA</a>,
+        <a href="http://chandra.harvard.edu/">Chandra</a>, <br>
+        <a href="https://www.cfa.harvard.edu/sao">SAO</a> &
+        <a href="http://cs.brown.edu/people/faculty/tsgouros/">Brown CS</a></div>
+      <br />
+    </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    // This stuff is down here at the end because it has to run as soon as
+    // all the a-frame assets are loaded.  It manages the splash screen shown
+    // above, by pausing the action as soon as everything is loaded, and then by
+    // executing .play() when the start button is pressed.
+
+    // Pause action as soon as everything is loaded.
+    document.getElementById("mainScene").addEventListener("loaded",
+      function() {
+        document.getElementById("go-button").style.display = "flex";
+    });
+
+    pressStart = function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("go-button").style.display = "none";
+
+      // Load all the sounds and play-then-pause them all, to get them
+      // permission to run under the iOS rules, which say that a sound
+      // can only be played as a result of a user action.
+      var sounds = document.getElementsByTagName('audio');
+
+      for (i = 0; i < sounds.length; i++) {
+        // console.log("playing, then pausing:", sounds[i]);
+        var promise = sounds[i].play(); 
+
+        if (promise) {
+            //console.log("PLAYING:", promise);
+            sounds[i].pause();
+            sounds[i].currentTime = 0;
+
+          promise.catch(function(e) { 
+            console.log(e); 
+            console.log(e.name); 
+            console.log(e.message); 
+            console.log(e.code); 
+          });
+        }      
+      }
+
+      var controllerComponent = document.querySelector('[controller]').components.controller;;
+      controllerComponent.startTour();
+    }
+  </script>
+
+  </body>
+</html>
